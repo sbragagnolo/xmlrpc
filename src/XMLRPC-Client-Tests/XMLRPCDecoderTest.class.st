@@ -1,0 +1,82 @@
+"
+Test the XMLRPC Decoder.
+
+XMLRPCDecoderTest new testDecoder
+"
+Class {
+	#name : #XMLRPCDecoderTest,
+	#superclass : #XMLRPCClientTests,
+	#category : #'XMLRPC-Client-Tests'
+}
+
+{ #category : #Testing }
+XMLRPCDecoderTest >> suite [
+	^ (TestSuite named: 'XMLRPCDecoderTests')
+		addTest: (XMLRPCDecoderTest selector: #testDecoder)
+]
+
+{ #category : #Testing }
+XMLRPCDecoderTest >> testDecoder [
+	"Test the decoder."
+	| e d coll |
+	e := XMLRPCEncoder new.
+	d := XMLRPCDecoder new.
+
+	coll := OrderedCollection new.
+	coll add: 17.
+	coll add: 'Some String'.
+	coll add: true.
+	coll add: false.
+	coll add: 3.14159265359.
+	coll add: XMLRPCDateTime now.
+	coll add: #(1 2 3 'ima g' ).
+
+	coll
+		do: [:item | 
+			| xdom er dr | 
+			er := self
+						xmlIfy: (e encode: item).
+			xdom := XMLDOMParser parseDocumentFrom: er readStream.
+			dr := d
+						decode: (xdom elements at: 1).
+			"Transcript show: 'Decoded ' , er , ' to ' , dr asString. 
+			Transcript cr.]"
+			self
+				assertEquals: item
+				to: dr  
+				msg: 'Decoding ' , item className]
+			
+		
+]
+
+{ #category : #Testing }
+XMLRPCDecoderTest >> testDecoderStruct [
+	"Test the decoder structure."
+	| e d dict xdom er dr|
+	e := XMLRPCEncoder new.
+	d := XMLRPCDecoder new.
+	dict := Dictionary new.
+	dict at: 'a' put: 'A'.
+	dict at: 'b' put: 'B'.
+
+	er := self xmlIfy: (e encodeStruct: dict).
+
+
+	xdom := XMLDOMParser parseDocumentFrom: er readStream.
+
+	dr := d decodeStruct: (xdom elements at: 1).
+			"Transcript show: 'Decoded ' , er , ' to ' , dr asString. 
+			Transcript cr."
+		self
+			assertEquals: dict
+				to: dr
+				msg: 'Decoding ' , dict className
+
+
+
+]
+
+{ #category : #private }
+XMLRPCDecoderTest >> xmlIfy: t [ 
+	^ '<?xml version="1.0"?><param>' , t , '</param>'
+]
