@@ -167,6 +167,34 @@ XMLRPCProxy >> processResponse: xmlStream [
 XMLRPCProxy >> sendXmlRpc: data [ 
 	"Send the XML-RPC data and get the response. Return the raw XML."
 	| s req res xml |
+
+
+xml := ZnClient new
+ 	      url: url;
+  	     entity: (ZnEntity with: data type: ZnMimeType applicationXml);
+  	     post.
+
+"
+	s := HTTPSocket initHTTPSocket: url ifError: [:msg | XMLRPCException signal: 'Error connecting ' , url asString, '(', msg, ')'].
+
+	req := 'POST ' , url fullPath , ' HTTP/1.0' , String crlf , 'Host: ' , url authority , String crlf , 'Content-type: text/xml' , String crlf , 'Content-length:  ' , data size asString , String crlf , 'User-Agent:  Spy Internetworking XML-RPC client for Smalltalk' , String crlf , String crlf , data.
+"
+	"Send the command"
+	"s sendCommand: req."
+
+	"Make sure the result was valid."
+	"s responseCode = 200
+		ifFalse: ['XXX Raise exception.']."
+	"Get the data up to the first double-newline (indicating end of headers)"
+	" res := s getResponseUpTo: String crlf , String crlf.
+	xml := s getRestOfBuffer: (res at: 3) contents."
+	^ xml
+]
+
+{ #category : #private }
+XMLRPCProxy >> sendXmlRpcBAK: data [ 
+	"Send the XML-RPC data and get the response. Return the raw XML."
+	| s req res xml |
 	s := HTTPSocket initHTTPSocket: url ifError: [:msg | XMLRPCException signal: 'Error connecting ' , url asString, '(', msg, ')'].
 	req := 'POST ' , url fullPath , ' HTTP/1.0' , String crlf , 'Host: ' , url authority , String crlf , 'Content-type: text/xml' , String crlf , 'Content-length:  ' , data size asString , String crlf , 'User-Agent:  Spy Internetworking XML-RPC client for Smalltalk' , String crlf , String crlf , data.
 	"Send the command"
