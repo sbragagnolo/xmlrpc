@@ -374,10 +374,10 @@ ConfigurationOfXMLRPC >> version100Beta3: spec [
 			project: 'XMLSupport' with: '1.2.1';
 			project: 'Kom' with: '1.0.9'.
 		spec
-			package: 'XMLRPC-Client-Core' with: 'XMLRPC-Client-Core-GermanArduino.20';
-			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-GermanArduino.11';
-			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-GermanArduino.12';
-			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-GermanArduino.5'.].
+			package: 'XMLRPC-Client-Core' with: 'XMLRPC-Client-Core-GermanArduino.21';
+			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-GermanArduino.12';
+			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-GermanArduino.11';
+			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-GermanArduino.6'.].
 ]
 
 { #category : #versions }
