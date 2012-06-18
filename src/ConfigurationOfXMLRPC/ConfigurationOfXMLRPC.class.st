@@ -382,7 +382,7 @@ ConfigurationOfXMLRPC >> version100Beta3: spec [
 
 { #category : #versions }
 ConfigurationOfXMLRPC >> version100Beta4: spec [ 
-	<version: '1.0-Beta3' imports: #('1.3-beta3-baseline') >
+	<version: '1.0-Beta4' imports: #('1.3-beta3-baseline') >
 	
 	spec for: #common do: [
 		spec blessing: #beta.
