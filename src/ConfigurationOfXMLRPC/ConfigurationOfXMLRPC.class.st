@@ -382,17 +382,17 @@ ConfigurationOfXMLRPC >> version100Beta3: spec [
 
 { #category : #versions }
 ConfigurationOfXMLRPC >> version100Beta4: spec [ 
-	<version: '1.0-Beta4' imports: #('1.3-beta3-baseline') >
+	<version: '1.0-Beta3' imports: #('1.3-beta3-baseline') >
 	
 	spec for: #common do: [
 		spec blessing: #beta.
 		spec author: 'GermanArduino'.
-		spec timestamp: '06/05/2012 09:00'.
+		spec timestamp: '06/03/2012 18:00'.
 		spec 
 			project: 'XMLSupport' with: '1.2.1';
 			project: 'Kom' with: '1.0.9'.
 		spec
-			package: 'XMLRPC-Client-Core' with: 'XMLRPC-Client-Core-GermanArduino.22';
+			package: 'XMLRPC-Client-Core' with: 'XMLRPC-Client-Core-GermanArduino.23';
 			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-GermanArduino.12';
 			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-GermanArduino.11';
 			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-GermanArduino.6'.].
