@@ -124,5 +124,5 @@ XMLRPCDateTime >> time [
 { #category : #accessing }
 XMLRPCDateTime >> time: t [
 	"set the time portion of the datetime."
-	time := t
+	time := Time fromSeconds: t seconds truncated 
 ]
