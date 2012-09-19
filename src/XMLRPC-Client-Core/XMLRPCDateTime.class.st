@@ -101,8 +101,11 @@ XMLRPCDateTime >> pad: in to: preferredSize with: thing [
 	| rv |
 	rv := Text new.
 	rv append: in asString.
-	[rv size < preferredSize]
-		whileTrue: [rv prepend: thing].
+	
+	[ rv size < preferredSize ] whileTrue: [
+		rv prepend: thing
+	].
+
 	^ rv asString
 ]
 
@@ -121,5 +124,5 @@ XMLRPCDateTime >> time [
 { #category : #accessing }
 XMLRPCDateTime >> time: t [
 	"set the time portion of the datetime."
-	time := Time fromSeconds: t seconds truncated 
+	time := t
 ]

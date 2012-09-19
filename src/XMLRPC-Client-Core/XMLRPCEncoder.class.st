@@ -26,32 +26,47 @@ XMLRPCEncoder >> encode: val [
 	Returns the encoded value.  
 	"
 	val caseOf: {
-		[True] -> [^ self wrapVal: '1' type: 'boolean'].
-		[true] -> [^ self wrapVal: '1' type: 'boolean'].
-		[False] -> [^ self wrapVal: '0' type: 'boolean'].
-		[false] -> [^ self wrapVal: '0' type: 'boolean'].
+		"Booleans"
+			[ True ] 			->	[ ^ self wrapVal: '1' type: 'boolean' ].
+			[ true ] 				->	[ ^ self wrapVal: '1' type: 'boolean' ].
+			[ False ] 			-> 	[ ^ self wrapVal: '0' type: 'boolean' ].
+			[ false ] 			-> 	[ ^ self wrapVal: '0' type: 'boolean' ].
 	} otherwise: [
 		(val class) caseOf: {
-			[SmallInteger] -> [^ self wrapVal: val asString type: 'i4'].
-			[Float] -> [^ self wrapVal: val asString type: 'double'].
-			[String] -> [^ self
-				wrapVal: (self normalize: val)].
-			[ByteString] -> [^ self
-				wrapVal: (self normalize: val)].
-			[XMLRPCDateTime] -> [^ self wrapVal: val encodeISO8601 type: 'dateTime.iso8601'].
-			[Array] -> [^ self
-				wrapVal: (self encodeArray: val)
-				type: 'array'].
-			[Dictionary] -> [^ self
-				wrapVal: (self encodeStruct: val)
-				type: 'struct'].
+			"Numbers"
+			[ SmallInteger ]		->	[ ^ self wrapVal: val asString type: 'i4' ].
+			[ Float ]	 			->	[ ^ self wrapVal: val asString type: 'double' ].
+			
+			"Strings"		
+			[ String ] 			->	[ ^ self wrapVal: (self normalize: val) ].
+			[ ByteString ] 		-> 	[ ^ self wrapVal: (self normalize: val) ].
+			
+			"Date"
+			[ XMLRPCDateTime] -> 	[ ^ self wrapVal: val encodeISO8601 type: 'dateTime.iso8601' ].
+
+			"Collections"
+			[ Array ]			-> 	[ ^ self wrapVal: (self encodeArray: val) type: 'array' ].
+			[ Dictionary ] 		-> 	[ ^ self 	wrapVal: (self encodeStruct: val) type: 'struct'].
+					
 		} otherwise: [
-			val isStream
-				ifTrue: [^ self wrapVal: (Base64MimeConverter mimeEncode: val) contents type: 'base64']
-				ifFalse:
-					"Unhandled type."
-					[XMLRPCException signal: 'Unhandled type:  ' , val className].
-			]]
+			val isStream ifTrue: [
+				^ self wrapVal: (Base64MimeConverter mimeEncode: val) contents type: 'base64'
+			] ifFalse: [
+				"Unhandled type."
+				XMLRPCException signal: 'Unhandled type:  ' , val className
+			].
+		].
+	].
+	
+
+
+
+
+
+
+
+
+
 ]
 
 { #category : #private }
@@ -60,9 +75,9 @@ XMLRPCEncoder >> encodeArray: a [
 	| rv |
 	rv := Text new.
 	rv append: '<data>'.
-	a
-		do: [:el | rv
-				append: (self encode: el)].
+	a do: [ :el | 
+		rv append: (self encode: el)
+	].
 	rv append: '</data>'.
 	^ rv asString
 ]
@@ -73,9 +88,12 @@ XMLRPCEncoder >> encodeStruct: s [
 	| rv |
 	rv := Text new.
 	rv append: '<struct>'.
-	s
-		keysAndValuesDo: [:key :val | rv append: '<member><name>' , (self normalize: key) , '</name>'
-					, (self encode: val) , '</member>'].
+
+	s keysAndValuesDo: [
+		:key :val | 
+		rv append: '<member><name>' , (self normalize: key) , '</name>', (self encode: val) , '</member>'.
+	].
+
 	rv append: '</struct>'.
 				
 	^ rv asString
@@ -85,18 +103,18 @@ XMLRPCEncoder >> encodeStruct: s [
 XMLRPCEncoder >> normalize: s [ 
 	"Normalize an XML string."
 	| rv map |
+
 	map := Dictionary new.
 	map at: $< put: '&lt;'.
 	map at: $> put: '&gt;'.
 	map at: $& put: '&amp;'.
+	
 	rv := Text new.
-	s
-		do: [:c | 
-			rv
-				append: (map
-						at: c
-						ifAbsent: [c])].
-	^ rv asString
+	
+	s do: [:c | 
+		rv append: (map at: c ifAbsent: [c]).
+	].
+	^ rv asString.
 ]
 
 { #category : #private }

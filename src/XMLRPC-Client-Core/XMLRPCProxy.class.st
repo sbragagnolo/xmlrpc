@@ -28,6 +28,8 @@ Proxy class to issue XML-RPC requests.
 Class {
 	#name : #XMLRPCProxy,
 	#superclass : #Object,
+	#traits : 'TLogger',
+	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'url'
 	],
@@ -97,6 +99,9 @@ XMLRPCProxy >> invokeMethod: aString withArgs: anArray [
 	anXMLRPCProxy invokeMethod: 'test.method' withArgs: #(19 77)
 "
 	| request response |
+	
+	self debug: ['invokeMethod:', aString , 'withArgs:', anArray asString].
+	
 	request := self buildXmlRpc: aString withArgs: anArray.
 	response := self sendXmlRpc: request.
 	^ self processResponse: response.
@@ -145,50 +150,51 @@ XMLRPCProxy >> processFault: xmlFault [
 { #category : #private }
 XMLRPCProxy >> processResponse: xmlStream [ 
 	"Process the results."
-	| xmldoc mr fr pr |
+	| xmldoc methodResponse fault parameters content  |
+	
 	xmldoc := XMLDOMParser parseDocumentFrom: xmlStream.
-	mr := xmldoc elementAt: 'methodResponse'.
-	mr
-		ifNil: [XMLRPCException signal: 'methodResponse not found in XML Stream.'].
+	
+	methodResponse := xmldoc elementAt: 'methodResponse'. 
+	
+	methodResponse	ifNil: [ 
+		XMLRPCException signal: 'methodResponse not found in XML Stream.' 
+	].
+	
 	"See if it's a fault response."
-	fr := mr elementAt: 'fault'.
-	fr
-		ifNotNil: [self processFault: fr].
+	
+	fault := methodResponse elementAt: 'fault'.
+	fault ifNotNil: [ 
+		self processFault: fault
+	].
+	
 	"If we made it this far, it's a valid response, look for the results."
-	pr := mr elementAt: 'params'.
-	pr
-		ifNil: [XMLRPCException signal: 'Params not found in XML-RPC response.'].
+	parameters := methodResponse elementAt: 'params'.
+	parameters ifNil: [
+		XMLRPCException signal: 'Params not found in XML-RPC response.'
+	].
+
 	"Decode, and return the response."
-	" self halt. "
-	^ XMLRPCDecoder new decode: pr
+
+	^ XMLRPCDecoder new decode: parameters
+	
+
+
 ]
 
 { #category : #private }
 XMLRPCProxy >> sendXmlRpc: data [ 
 	"Send the XML-RPC data and get the response. Return the raw XML."
 	| s req res xml |
-
-
-xml := ZnClient new
- 	      url: url;
-  	     entity: (ZnEntity with: data type: ZnMimeType applicationXml);
-  	     post.
-
-"
-	s := HTTPSocket initHTTPSocket: url ifError: [:msg | XMLRPCException signal: 'Error connecting ' , url asString, '(', msg, ')'].
-
-	req := 'POST ' , url fullPath , ' HTTP/1.0' , String crlf , 'Host: ' , url authority , String crlf , 'Content-type: text/xml' , String crlf , 'Content-length:  ' , data size asString , String crlf , 'User-Agent:  Spy Internetworking XML-RPC client for Smalltalk' , String crlf , String crlf , data.
-"
-	"Send the command"
-	"s sendCommand: req."
-
+	
+	res := ZnEasy post: url data: (ZnStringEntity xml: data).
+	
 	"Make sure the result was valid."
-	"s responseCode = 200
-		ifFalse: ['XXX Raise exception.']."
-	"Get the data up to the first double-newline (indicating end of headers)"
-	" res := s getResponseUpTo: String crlf , String crlf.
-	xml := s getRestOfBuffer: (res at: 3) contents."
-	^ xml
+	(res isSuccess and: [ res contentType sub = 'xml' ]) ifFalse: [ self error: ' ', res contents ].
+	
+	
+	^ res contents.
+	
+	
 ]
 
 { #category : #accessing }
