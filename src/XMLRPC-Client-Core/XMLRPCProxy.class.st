@@ -189,7 +189,7 @@ XMLRPCProxy >> sendXmlRpc: data [
 	res := ZnEasy post: url data: (ZnStringEntity xml: data).
 	
 	"Make sure the result was valid."
-	(res isSuccess and: [ res contentType sub = 'xml' ]) ifFalse: [ self error: ' ', res contents ].
+	(res isSuccess and: [ res contentType sub = 'xml' ]) ifFalse: [ self error: ' ', res statusLine asString ].
 	
 	
 	^ res contents.
