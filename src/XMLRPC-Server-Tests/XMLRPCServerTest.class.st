@@ -12,7 +12,7 @@ XMLRPCServerTest >> setUp [
 	newServer := false.
 	XMLRPCStandardValidator addTests.
 	(HttpService servicesNamed: 'xmlrpcd') 
-		ifEmpty: [XMLRPCHttpModule start; setDebugMode.
+		ifEmpty: [XMLRPCHttpModule startOn:8081; setDebugMode.
 			(Delay forMilliseconds: 5) wait.
 			newServer := true]
 ]
@@ -30,19 +30,15 @@ XMLRPCServerTest >> testDictionary [
 	d := Dictionary new.
 	d at: 'true' put: true.
 	d at: 'Markus' put: 'Fritsche'.
-	p := XMLRPCProxy new url: 'http://localhost:8081/xmlrpc' asUrl.
-
+	p := XMLRPCProxy new url: 'http://localhost:8081/' asUrl.
 	r := p invokeMethod: 'validator1.echoStructTest' withStruct: d.
-	
-	self assert: (r first = d)
-	
-
+	self assert: r = d
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPCServerTest >> testHallo [
 	| p |
-	p := XMLRPCProxy new url: 'http://localhost:8081/xmlrpc' asUrl.
+	p := XMLRPCProxy new url: 'http://localhost:8081/' asUrl.
 	p invokeMethod: 'validator1.echoStructTest' withArgs: #('Hallo')
 
 ]
