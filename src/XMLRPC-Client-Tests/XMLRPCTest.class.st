@@ -45,7 +45,7 @@ XMLRPCTest >> setUp [
 	"Set up the test suite:"
 	| url |
 	XMLRPCServerEchoTest  new setUp. "get the server running on the other end.. make it through groovy/ python if you wish.. Server stop is set in the tearDown"
-	url := Url absoluteFromText: 'http://localhost:8081/xmlrpc'.
+	url := Url absoluteFromText: 'http://localhost:8081/'.
 	proxy := XMLRPCProxy new url: url.
 	"Transcript show: 'Set up XMLRPCTest';
 		 cr."
@@ -93,7 +93,7 @@ XMLRPCTest >> testBinary [
 	p := OrderedCollection new.
 	p add: msg readStream.
 	r := proxy invokeMethod: 'echo.echoBinary' withArgs: p.
-
+	
 	self assertEquals: msg to: (r contents asString) msg: 'Binary (base64) method failed.'
 ]
 
