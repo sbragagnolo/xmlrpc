@@ -6,45 +6,37 @@ Class {
 	#superclass : #Object,
 	#traits : 'TLogger',
 	#classTraits : 'TLogger classTrait',
-	#classInstVars : [
+	#instVars : [
+		'services'
+	],
+	#classVars : [
+		'defaultModule',
 		'port',
 		'service'
 	],
 	#category : #'XMLRPC-Server-Core'
 }
 
-{ #category : #'as yet unclassified' }
-XMLRPCHttpModule class >> alias [
-	 ^'/'.
+{ #category : #construction }
+XMLRPCHttpModule class >> defaultModule [
+	^defaultModule ifNil: [
+		defaultModule := XMLRPCHttpModule new.
+		XMLRPCServerRequest receivers keysAndValuesDo:   [
+			:key :value | 
+			defaultModule 	registerService: key target: value key selector: value value. 
+		]
+	]
 ]
 
 { #category : #'as yet unclassified' }
-XMLRPCHttpModule class >> createServiceOnPort: aPort [
-	| serv xs ma |
-	Smalltalk at: #HttpService ifPresent: [
-		:hs | 
-		
-		self debug: [' Creating service based on HttpService on alias ', self alias].
-		
-		xs := XMLRPCHttpModule new.
-		ma := ModuleAssembly core.
-		ma 	alias: self alias to: [
-				ma 	addPlug: [
-					:request | 
-					xs process: request
-				]
-		].
-		serv := HttpService on: aPort.
-		serv plug: ma rootModule.
-		^ serv
-	].
+XMLRPCHttpModule class >> defaultPort [
+	self flag: #deprecated.
+	^8081.
+]
 
-	Smalltalk at: #ComancheNetService ifPresent: [
-		:cns | 
-
-		self debug: [' Creating service based on ComancheNetService on alias ', self alias].
-		^ (cns named: 'xmlrpc' onPort: port) module: self new
-	]
+{ #category : #construction }
+XMLRPCHttpModule class >> for: aServiceDefinition [ 
+	^ self new services: aServiceDefinition ; yourself.
 ]
 
 { #category : #'as yet unclassified' }
@@ -55,95 +47,132 @@ XMLRPCHttpModule class >> initialize [
 
 { #category : #'as yet unclassified' }
 XMLRPCHttpModule class >> pause [
-	self info: ' Stopping XMLRPC Server '.
-	service ifNotNil: [
-		self debug: ' Unregistering service '.
-		service unregister.
-		service := nil
-	] ifNil:[
-		self debug: ' Related service is poiting to Nil '.
-	].
-	self info: ' XMLRPC Server stopped'.
+	self flag: #deprecated.
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPCHttpModule class >> setDebugMode [
-	service setDebugMode.
+	self flag: #deprecated.
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPCHttpModule class >> setDeploymentMode [
-	service setDeploymentMode.
+		self flag: #deprecated.
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPCHttpModule class >> setVerboseMode [
-	service setVerboseMode.
+	self flag: #deprecated.
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPCHttpModule class >> shutdown [
-	self pause
+	self flag: #deprecated.
+	XMLRPCService stopServing: self defaultModule at: self defaultPort.
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPCHttpModule class >> start [
-	^ self startOn: 8081
+	self flag: #deprecated.
+	^ self startOn: self defaultPort.
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPCHttpModule class >> startKom61 [
+	self flag: #deprecated.
 	^ self start
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPCHttpModule class >> startOn: aPort [
-	self startOn: aPort and: nil.
-]
-
-{ #category : #'as yet unclassified' }
-XMLRPCHttpModule class >> startOn: aPort and: anAddress [
-	self stop.
-	
-	self info: ['Configuring XMLRPC Server with address: ', anAddress ,' port:', aPort asString].
-
-	port := aPort.
-	service := self createServiceOnPort: aPort.
-	anAddress ifNotNil:[
-		service address: anAddress.
-	].
-
-	self info: ['Starting XMLRPC Server at http://', anAddress ,':', aPort asString, '/'].
-	service start
+	self flag: #deprecated.
+	XMLRPCService atPort: aPort serve: (self defaultModule) at:'/'
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPCHttpModule class >> startUp [
+	self flag: #deprecated.
 	port ifNotNil: [self startOn: port]
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPCHttpModule class >> stop [
+	self flag: #deprecated.
 	self pause.
 	port := nil.
 
 ]
 
+{ #category : #logging }
+XMLRPCHttpModule >> initialize [ 
+	super initialize.
+	services := Dictionary new.
+	
+]
+
+{ #category : #private }
+XMLRPCHttpModule >> invoke: aService with: anArrayOfParameters [
+	| association target selector |
+	association := (services at: aService).
+	target := association first key.
+	selector := association first value.
+
+	[
+		^ target perform: selector withArguments: anArrayOfParameters asArray.
+	] on: Error do: [
+		:e |
+		XMLRPCMethodError new signal: 'Message not understood by server class: ', e messageText.
+	]
+]
+
 { #category : #process }
 XMLRPCHttpModule >> process: request [ 
-
-
-	self debug: 'Analyzing Request'.
+	| xmldoc  parameters service  |
+	
 	[
-	 	| xrReq reqData |
-		reqData := request propertyAt: #rawPostFields.
-		xrReq := XMLRPCServerRequest fromRequest: reqData.
-		xrReq targetURI: request url.
-		^ HttpResponse fromMIMEDocument: (MIMEDocument contentType: 'text/xml' content: xrReq methodResponse)
-		
-	] on: Error do: [:e | 
-		
-		self logError: e errorMessage.
-		^ HttpResponse fromMIMEDocument: (MIMEDocument contentType: 'text/xml' content: (XMLRPCErrorHandler new error: e) errorMessage)
-	]
+		xmldoc := XMLDOMParser parseDocumentFrom: (request rawPostFields) readStream.		
+		service := self resolveServiceName: xmldoc.
+		parameters := self resolveParameters: xmldoc.
+		^ self returnableResponse: (self invoke: service with: parameters) . 	
+	] on: Error do:[ 
+		:e |
+		 ^ HttpResponse fromMIMEDocument: (MIMEDocument contentType: 'text/xml' content: (XMLRPCErrorHandler new error: e) errorMessage)
+	].
+
+]
+
+{ #category : #registering }
+XMLRPCHttpModule >> registerService: serviceName target: aTarget selector: aSelector [ 
+	services at: serviceName put: { aTarget -> aSelector asSymbol }.
+]
+
+{ #category : #private }
+XMLRPCHttpModule >> resolveParameters: xmldoc [
+	^((xmldoc firstElement) elementAt: #params ) elements inject: OrderedCollection new into: [
+		:parameters :parameter |
+		parameters add: (XMLRPCDecoder new decode: parameter); yourself.
+	].
+]
+
+{ #category : #private }
+XMLRPCHttpModule >> resolveServiceName: xmldoc [
+	^ ((xmldoc firstElement elementAt: #methodName) contentString).	
+]
+
+{ #category : #private }
+XMLRPCHttpModule >> returnableResponse: aResult [
+	| stream |
+	stream := WriteStream on: String new.
+	stream nextPutAll: '<?xml version="1.0"?><methodResponse><params><param>'.
+	stream nextPutAll: aResult asXMLRPCString.
+	stream nextPutAll: '</param></params></methodResponse>'.
+	
+	
+	^ HttpResponse fromMIMEDocument: (MIMEDocument contentType: 'text/xml' content: stream contents )
+	
+]
+
+{ #category : #accessing }
+XMLRPCHttpModule >> services: aServiceDefinition [
+	services := aServiceDefinition asDictionary.
 ]

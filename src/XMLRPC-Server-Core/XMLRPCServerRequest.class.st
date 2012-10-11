@@ -99,69 +99,6 @@ XMLRPCServerRequest >> methodCall: anObject [
 	methodCall := anObject
 ]
 
-{ #category : #invocation }
-XMLRPCServerRequest >> methodResponse [
-	| srv stream ret encodedReturn |
-	
-	" 
-		Reach the method then executeit. If is not there a MessageNotFound is thrown. 
-		TODO: show an error in case of method fail.
-	"
-	self flag: #lookAtTheComment.
-
-	[
-		self debug: ['Attempting to load [', methodCall ,'] service'].
-		srv := (
-		Receivers at: methodCall asSymbol ifAbsent: [
-			self logError: ['There is not related service to: [', methodCall asSymbol asString, ']'].
-			XMLRPCMethodError new signal: 'Serverside method not found'
-			]
-		).
-		self debug: ['Attempting to call [', methodCall ,' service]'].
-		ret := ((srv key) perform: (srv value) withArguments: (self params asArray)).		
-		ret 	ifNil: [ret := false].
-			
-		self debug: ['Service call was successfull ', ret asString].
-			
-	] on: Error do: [
-		:e | 
-		self halt.
-		self logError: ['Error calling service [', methodCall asSymbol asString, '] [', e messageText, ']'].
-		XMLRPCMethodError new signal: 'Message not understood by server class: ', e messageText.
-	] .
- "MessageNotUnderstood"
-	
-	" 
-		If all the process of execution was right, just need to encode the response in the xml format. 
-	"	
-	[
-		encodedReturn := ret asXMLRPCString.
-	] on: Error do: [
-		:e |
-		self logError: ['Error trying to encode service [', methodCall asSymbol asString, '] response [', e messageText, ']'].
-		
-		XMLRPCReturnError new signal: 'Could not encode returned value "' , ret asString , '"'
-	].
-	
-	
-	stream := WriteStream on: String new.
-	
-	stream nextPutAll: '<?xml version="1.0"?><methodResponse><params><param>'.
-	stream nextPutAll: encodedReturn.
-	stream nextPutAll: '</param></params></methodResponse>'.
-	
-	self debug: [ 'XMLResponse: ', '<?xml version="1.0"?><methodResponse><params><param>', String cr, encodedReturn, String cr, '</param></params></methodResponse>'.].
-	^ stream contents
-	
-
-
-
-
-
-
-
-]
-
 { #category : #accessing }
 XMLRPCServerRequest >> params [
 	"Answer the receiver's 'params'."

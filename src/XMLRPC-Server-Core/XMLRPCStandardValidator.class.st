@@ -8,14 +8,19 @@ Class {
 XMLRPCStandardValidator class >> addTests [
 	"XMLRPCStandardValidator addTests"
 
-	XMLRPCServerRequest registerService: 'validator1.arrayOfStructsTest' class: self selector: #arrayOfStructsTest:.
-	XMLRPCServerRequest registerService: 'validator1.countTheEntities' class: self selector: #countTheEntities:.
-	XMLRPCServerRequest registerService: 'validator1.echoStructTest' class: self selector: #echoStructTest:.
-	XMLRPCServerRequest registerService: 'validator1.easyStructTest' class: self  selector: #easyStructTest:.
-	XMLRPCServerRequest registerService: 'validator1.moderateSizeArrayCheck' class: self selector: #moderateSizeArrayCheck:.
-	XMLRPCServerRequest registerService: 'validator1.nestedStructTest' class: self selector: #nestedStructTest:.
-	XMLRPCServerRequest registerService: 'validator1.simpleStructReturnTest' class: self selector: #simpleStructReturnTest:.
-	XMLRPCServerRequest registerService: 'validator1.manyTypesTest' class: self selector: #manyTypesTest:
+	XMLRPCService atPort: 8081 serve: 
+	{
+		'validator1.arrayOfStructsTest' -> { self-> #arrayOfStructsTest:}.
+		'validator1.countTheEntities'  ->  { self ->  #countTheEntities:}.
+		'validator1.echoStructTest'  ->  { self ->  #echoStructTest:}.
+		'validator1.easyStructTest'  ->  { self  ->  #easyStructTest:}.
+		'validator1.moderateSizeArrayCheck'  ->  { self ->  #moderateSizeArrayCheck:}.
+		'validator1.nestedStructTest'  ->  { self ->  #nestedStructTest:}.
+		'validator1.simpleStructReturnTest'  ->  { self ->  #simpleStructReturnTest:}.
+		'validator1.manyTypesTest'  ->  { self ->  #manyTypesTest: }.	
+	} asXMLRPCHttpModule at:'/'.
+	
+
 ]
 
 { #category : #'as yet unclassified' }
