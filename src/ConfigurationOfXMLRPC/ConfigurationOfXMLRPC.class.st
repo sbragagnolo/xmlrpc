@@ -25,6 +25,19 @@ ConfigurationOfXMLRPC class >> bootstrapPackage: aString from: aPath [
 			version workingCopy repositoryGroup addRepository: repository]
 ]
 
+{ #category : #'metacello tool support' }
+ConfigurationOfXMLRPC class >> configurationOfLog [
+	<logConfiguration>
+	^ [
+	     :builder |
+	     builder forClass: LoggedExampleCustomized 
+			     useLevel:#warn 
+			     showingLogAs: ('%tag #%class >> %selector [%log]' asPatternFormatter) 
+			     into: LogStdoutWriter instance.
+	].
+
+]
+
 { #category : #private }
 ConfigurationOfXMLRPC class >> ensureMetacello [
 	"Bootstrap Gofer (if necessary), load latest mcz file for ConfigurationOfMetacello (using old 
