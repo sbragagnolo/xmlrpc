@@ -28,6 +28,11 @@ XMLRPCServerRequest class >> cleanUpReceiverDictionary [
 	
 ]
 
+{ #category : #configuration }
+XMLRPCServerRequest class >> configurationOfLog [
+	<logConfigurationAsClass: #ConfigurationOfXMLRPC >
+]
+
 { #category : #'as yet unclassified' }
 XMLRPCServerRequest class >> fromRequest: xmlString [ 
 	| xmldoc r parameters relatedSelector |

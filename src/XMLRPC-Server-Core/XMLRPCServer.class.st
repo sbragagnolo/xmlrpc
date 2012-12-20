@@ -11,6 +11,11 @@ Class {
 	#category : #'XMLRPC-Server-Core'
 }
 
+{ #category : #configuration }
+XMLRPCServer class >> configurationOfLog [
+	<logConfigurationAsClass: #ConfigurationOfXMLRPC >
+]
+
 { #category : #'as yet unclassified' }
 XMLRPCServer class >> startOn: aPort [
 	^ self startOn: aPort with: Dictionary new.

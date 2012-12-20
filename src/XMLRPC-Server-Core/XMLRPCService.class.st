@@ -18,6 +18,11 @@ XMLRPCService class >> atPort: aPort serve: aModuleDefinition at: anAlias [
 
 ]
 
+{ #category : #configuration }
+XMLRPCService class >> configurationOfLog [
+	<logConfigurationAsClass: #ConfigurationOfXMLRPC  >
+]
+
 { #category : #loggin }
 XMLRPCService class >> destroy [
 	self instance destroy.

@@ -17,6 +17,11 @@ Class {
 	#category : #'XMLRPC-Server-Core'
 }
 
+{ #category : #configuration }
+XMLRPCHttpModule class >> configurationOfLog [
+	<logConfigurationAsClass: #ConfigurationOfXMLRPC >
+]
+
 { #category : #construction }
 XMLRPCHttpModule class >> defaultModule [
 	^defaultModule ifNil: [
