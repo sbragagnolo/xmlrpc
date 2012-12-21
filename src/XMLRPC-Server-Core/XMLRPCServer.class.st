@@ -51,14 +51,15 @@ XMLRPCServer >> at: uri put: aModule [
 { #category : #control }
 XMLRPCServer >> createServer [
 	| assembly |
-	self debug: [' Creating service based on HttpService on alias ', self alias].
+	
 		
 	
 	assembly := ModuleAssembly core.
 
 	modules keysAndValuesDo: [
 		:key :value | 
-		
+
+		self debug: [' Creating service based on HttpService on alias ', key asString ].		
 		assembly alias: key to: [
 			assembly addPlug: [
 					:request | 	
