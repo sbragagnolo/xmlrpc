@@ -1,12 +1,13 @@
 Class {
 	#name : #XMLRPCServer,
 	#superclass : #Object,
-	#traits : 'TLogger',
-	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'port',
 		'server',
 		'modules'
+	],
+	#classInstVars : [
+		'DefaultClass'
 	],
 	#category : #'XMLRPC-Server-Core'
 }
@@ -14,6 +15,21 @@ Class {
 { #category : #configuration }
 XMLRPCServer class >> configurationOfLog [
 	<logConfigurationAsClass: #ConfigurationOfXMLRPC >
+]
+
+{ #category : #construction }
+XMLRPCServer class >> defaultClass [ 
+	^ DefaultClass.
+]
+
+{ #category : #construction }
+XMLRPCServer class >> defaultClass: aClass [ 
+	DefaultClass := aClass.
+]
+
+{ #category : #construction }
+XMLRPCServer class >> initialize [
+	self defaultClass: XMLRPCZNServer.
 ]
 
 { #category : #'as yet unclassified' }
@@ -25,14 +41,14 @@ XMLRPCServer class >> startOn: aPort [
 
 { #category : #'as yet unclassified' }
 XMLRPCServer class >> startOn: aPort with: aModuleDictinaryDefinition [
-	^ self new port: aPort; modules: aModuleDictinaryDefinition; start ; yourself.
+	^ self defaultClass port: aPort; modules: aModuleDictinaryDefinition; start ; yourself.
 
 
 ]
 
 { #category : #construction }
 XMLRPCServer class >> startOn: aPort with: aModuleDictinaryDefinition at: anAlias [
-	^ self new port: aPort; at: anAlias put: aModuleDictinaryDefinition ; start ; yourself.
+	^ self defaultClass new port: aPort; at: anAlias put: aModuleDictinaryDefinition ; start ; yourself.
 
 
 ]
@@ -48,31 +64,9 @@ XMLRPCServer >> at: uri put: aModule [
 	modules at: uri put: aModule.
 ]
 
-{ #category : #control }
-XMLRPCServer >> createServer [
-	| assembly |
-	
-		
-	
-	assembly := ModuleAssembly core.
-
-	modules keysAndValuesDo: [
-		:key :value | 
-
-		self debug: [' Creating service based on HttpService on alias ', key asString ].		
-		assembly alias: key to: [
-			assembly addPlug: [
-					:request | 	
-					value process: request
-			]
-		].
-		
-	].
-		
-	server := HttpService on: port.
-	server plug: assembly rootModule.
-	
-
+{ #category : #accessing }
+XMLRPCServer >> createServer [ 
+	^ self subclassResponsibility.
 ]
 
 { #category : #'initialize-release' }
@@ -109,7 +103,7 @@ XMLRPCServer >> port: aPort [
 
 { #category : #control }
 XMLRPCServer >> start [
-	| assembly |
+
 	server ifNil:[
 		self createServer.
 	].
@@ -121,13 +115,5 @@ XMLRPCServer >> start [
 
 { #category : #control }
 XMLRPCServer >> stop [
-	self info: ' Stopping XMLRPC Server '.
-	server ifNotNil: [
-		self debug: ' Unregistering service '.
-		server unregister.
-		server := nil
-	] ifNil:[
-		self debug: ' Related service is poiting to Nil '.
-	].
-	self info: ' XMLRPC Server stopped'.
+	self subclassResponsibility.
 ]

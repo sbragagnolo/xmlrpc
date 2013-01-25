@@ -4,8 +4,6 @@ This class holds all information about a XMLRPC request an coordinates the compu
 Class {
 	#name : #XMLRPCServerRequest,
 	#superclass : #Object,
-	#traits : 'TLogger',
-	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'methodCall',
 		'params',
@@ -74,7 +72,6 @@ XMLRPCServerRequest class >> receivers [
 
 { #category : #'as yet unclassified' }
 XMLRPCServerRequest class >> registerService: serviceName class: aClass selector: aSelector [ 
-	self info: ['Registering service: ', serviceName, ' Poting to #', aClass name asSymbol asString, '>>', aSelector asSymbol asString  ].
 	self receivers at: serviceName asSymbol put: aClass -> aSelector
 ]
 

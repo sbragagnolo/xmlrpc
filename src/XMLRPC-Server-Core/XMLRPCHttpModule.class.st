@@ -4,8 +4,6 @@ This comanche module handles incoming requests for a XMLRPC server
 Class {
 	#name : #XMLRPCHttpModule,
 	#superclass : #Object,
-	#traits : 'TLogger',
-	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'services'
 	],
@@ -132,18 +130,18 @@ XMLRPCHttpModule >> invoke: aService with: anArrayOfParameters [
 
 { #category : #process }
 XMLRPCHttpModule >> process: request [ 
-	| xmldoc  parameters service  |
+	| xmldoc  parameters service response  |
 	
 	[
-		xmldoc := XMLDOMParser parseDocumentFrom: (request rawPostFields) readStream.		
+		xmldoc := XMLDOMParser parseDocumentFrom: (request contents) readStream.		
 		service := self resolveServiceName: xmldoc.
 		parameters := self resolveParameters: xmldoc.
-		^ self returnableResponse: (self invoke: service with: parameters) . 	
+		response := self returnableResponse: (self invoke: service with: parameters) . 	
 	] on: Error do:[ 
 		:e |
-		 ^ HttpResponse fromMIMEDocument: (MIMEDocument contentType: 'text/xml' content: (XMLRPCErrorHandler new error: e) errorMessage)
+		 response := (XMLRPCErrorHandler new error: e) errorMessage.
 	].
-
+	^ response.
 ]
 
 { #category : #registering }
@@ -173,7 +171,7 @@ XMLRPCHttpModule >> returnableResponse: aResult [
 	stream nextPutAll: '</param></params></methodResponse>'.
 	
 	
-	^ HttpResponse fromMIMEDocument: (MIMEDocument contentType: 'text/xml' content: stream contents )
+	^ stream contents.
 	
 ]
 

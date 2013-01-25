@@ -1,8 +1,6 @@
 Class {
 	#name : #XMLRPCService,
 	#superclass : #Object,
-	#traits : 'TLogger',
-	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'servers'
 	],
