@@ -324,6 +324,43 @@ spec for: #common do: [
 ].
 ]
 
+{ #category : #baselines }
+ConfigurationOfXMLRPC >> baseline13beta5: spec [ 
+	<version: '1.3-beta3-baseline'>
+	
+spec for: #common do: [
+	spec blessing: #baseline.
+	spec repository: 'http://ss3.gemstone.com/ss/XMLRPC'. 
+
+	spec project: 'XMLSupport' with: [
+				spec 	className: 'ConfigurationOfXMLSupport';
+						versionString: '1.2.1';
+						file: 'ConfigurationOfXMLSupport';
+						repository: 'http://www.squeaksource.com/MetacelloRepository' 
+	].		
+
+	spec project: 'Kom' with: [
+				spec	className: 'ConfigurationOfKomHttpServer';
+						versionString: '1.0.9';
+						file: 'ConfigurationOfKomHttpServer';
+						repository: 'http://www.squeaksource.com/MetacelloRepository' 
+	].
+			
+	spec 	package: 'XMLRPC-Client-Core' with: [spec requires: #('XMLSupport' 'Kom' 'PaulLePoulpe') ];
+			package: 'XMLRPC-Client-Tests' with: [ spec requires: 'XMLRPC-Client-Core' ];
+			package: 'XMLRPC-Server-Core' with: [ spec requires: 'XMLRPC-Client-Core' ]; 
+			package: 'XMLRPC-Server-Tests' with: [ spec requires: 'XMLRPC-Server-Core'].
+
+	spec	group: 'default' with: 'XMLRPC-Client-Core';	
+			group: 'All' with: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests' 'XMLRPC-Server-Core' 'XMLRPC-Server-Tests');
+			group: 'Client' with: #('XMLRPC-Client-Core');
+			group: 'Client with Tests' with: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests');
+			group: 'Server' with: #('XMLRPC-Server-Core');
+			group: 'Server with Tests' with: #('XMLRPC-Server-Core' 'XMLRPC-Server-Tests').
+
+].
+]
+
 { #category : #accessing }
 ConfigurationOfXMLRPC >> project [
 
@@ -415,6 +452,24 @@ ConfigurationOfXMLRPC >> version100Beta4: spec [
 			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-GermanArduino.12';
 			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-GermanArduino.11';
 			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-GermanArduino.6'.].
+]
+
+{ #category : #versions }
+ConfigurationOfXMLRPC >> version100Beta5: spec [ 
+	<version: '1.0-Beta5' imports: #('1.3-beta5-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #beta.
+		spec author: 'SantiagoBragagnolo'.
+		spec timestamp: '25/01/2013 12:30'.
+		spec 
+			project: 'XMLSupport' with: '1.2.1';
+			project: 'Kom' with: '1.0.9'.
+		spec
+			package: 'XMLRPC-Client-Core' with: ' XMLRPC-Client-Core-SantiagoBragagnolo.30';
+			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-SantiagoBragagnolo.14';
+			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-SantiagoBragagnolo.17';
+			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-SantiagoBragagnolo.9'.].
 ]
 
 { #category : #versions }
