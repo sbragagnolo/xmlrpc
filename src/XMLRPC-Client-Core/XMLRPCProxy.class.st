@@ -28,8 +28,6 @@ Proxy class to issue XML-RPC requests.
 Class {
 	#name : #XMLRPCProxy,
 	#superclass : #Object,
-	#traits : 'TLogger',
-	#classTraits : 'TLogger classTrait',
 	#instVars : [
 		'url'
 	],
@@ -99,8 +97,6 @@ XMLRPCProxy >> invokeMethod: aString withArgs: anArray [
 	anXMLRPCProxy invokeMethod: 'test.method' withArgs: #(19 77)
 "
 	| request response |
-	
-	self debug: ['invokeMethod:', aString , 'withArgs:', anArray asString].
 	
 	request := self buildXmlRpc: aString withArgs: anArray.
 	response := self sendXmlRpc: request.
