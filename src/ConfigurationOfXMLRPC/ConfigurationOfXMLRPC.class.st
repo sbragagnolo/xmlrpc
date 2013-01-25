@@ -326,7 +326,7 @@ spec for: #common do: [
 
 { #category : #baselines }
 ConfigurationOfXMLRPC >> baseline13beta5: spec [ 
-	<version: '1.3-beta3-baseline'>
+	<version: '1.3-beta5-baseline'>
 	
 spec for: #common do: [
 	spec blessing: #baseline.
