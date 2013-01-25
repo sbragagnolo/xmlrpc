@@ -346,7 +346,7 @@ spec for: #common do: [
 						repository: 'http://www.squeaksource.com/MetacelloRepository' 
 	].
 			
-	spec 	package: 'XMLRPC-Client-Core' with: [spec requires: #('XMLSupport' 'Kom' 'PaulLePoulpe') ];
+	spec 	package: 'XMLRPC-Client-Core' with: [spec requires: #('XMLSupport' 'Kom') ];
 			package: 'XMLRPC-Client-Tests' with: [ spec requires: 'XMLRPC-Client-Core' ];
 			package: 'XMLRPC-Server-Core' with: [ spec requires: 'XMLRPC-Client-Core' ]; 
 			package: 'XMLRPC-Server-Tests' with: [ spec requires: 'XMLRPC-Server-Core'].
