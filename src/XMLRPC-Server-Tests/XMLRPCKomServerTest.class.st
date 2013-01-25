@@ -1,5 +1,5 @@
 Class {
-	#name : #XMLRPCServerTest,
+	#name : #XMLRPCKomServerTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'newServer'
@@ -8,20 +8,20 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-XMLRPCServerTest >> setUp [
-	
+XMLRPCKomServerTest >> setUp [
+	XMLRPCServer defaultClass: XMLRPCKomServer.
 	XMLRPCStandardValidator addTests.
 	(Delay forMilliseconds: 5) wait.
 ]
 
 { #category : #'as yet unclassified' }
-XMLRPCServerTest >> tearDown [
+XMLRPCKomServerTest >> tearDown [
 	XMLRPCService destroy.
-
+	XMLRPCServer initialize.
 ]
 
 { #category : #'as yet unclassified' }
-XMLRPCServerTest >> testDictionary [
+XMLRPCKomServerTest >> testDictionary [
 	| d p r |
 	d := Dictionary new.
 	d at: 'true' put: true.
@@ -32,7 +32,7 @@ XMLRPCServerTest >> testDictionary [
 ]
 
 { #category : #'as yet unclassified' }
-XMLRPCServerTest >> testHallo [
+XMLRPCKomServerTest >> testHallo [
 	| p |
 	p := XMLRPCProxy new url: 'http://localhost:8081/' asUrl.
 	p invokeMethod: 'validator1.echoStructTest' withArgs: #('Hallo')

@@ -1,5 +1,5 @@
 Class {
-	#name : #XMLRPCServerEchoTest,
+	#name : #XMLRPCKomServerEchoTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'newServer'
@@ -8,9 +8,10 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-XMLRPCServerEchoTest >> setUp [
+XMLRPCKomServerEchoTest >> setUp [
 "self new setUp"
 "XMLRPCHttpModule stop"
+	XMLRPCServer defaultClass: XMLRPCKomServer.
 	newServer := false.
 	XMLRPCStandardEcho addTests.
 	(HttpService servicesNamed: 'test123') 
@@ -20,12 +21,13 @@ XMLRPCServerEchoTest >> setUp [
 ]
 
 { #category : #'as yet unclassified' }
-XMLRPCServerEchoTest >> tearDown [
-	 XMLRPCHttpModule stop 
+XMLRPCKomServerEchoTest >> tearDown [
+	 XMLRPCHttpModule stop.
+	XMLRPCServer initialize.
 ]
 
 { #category : #'as yet unclassified' }
-XMLRPCServerEchoTest >> testThroughClient [
+XMLRPCKomServerEchoTest >> testThroughClient [
 " bring in tests here independently in next version.. for now just reuse the XMLRPCTests"
 
  | client |
