@@ -473,6 +473,24 @@ ConfigurationOfXMLRPC >> version100Beta5: spec [
 ]
 
 { #category : #versions }
+ConfigurationOfXMLRPC >> version100Beta6: spec [ 
+	<version: '1.0-Beta6' imports: #('1.3-beta5-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #beta.
+		spec author: 'LucFabresse'.
+		spec timestamp: '19 April 2013 4:55:58 pm'.
+		spec 
+			project: 'XMLSupport' with: '1.2.2';
+			project: 'Kom' with: '1.1.1'.
+		spec
+			package: 'XMLRPC-Client-Core' with: 'XMLRPC-Client-Core-SantiagoBragagnolo.30';
+			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-SantiagoBragagnolo.14';
+			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-SantiagoBragagnolo.17';
+			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-SantiagoBragagnolo.9'.].
+]
+
+{ #category : #versions }
 ConfigurationOfXMLRPC >> version100alpha1: spec [ 
 	<version: '1.0-alpha1' imports: #('1.0-alpha1-baseline') >
 	
