@@ -466,7 +466,7 @@ ConfigurationOfXMLRPC >> version100Beta5: spec [
 			project: 'XMLSupport' with: '1.2.1';
 			project: 'Kom' with: '1.0.9'.
 		spec
-			package: 'XMLRPC-Client-Core' with: ' XMLRPC-Client-Core-SantiagoBragagnolo.30';
+			package: 'XMLRPC-Client-Core' with: 'XMLRPC-Client-Core-SantiagoBragagnolo.30';
 			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-SantiagoBragagnolo.14';
 			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-SantiagoBragagnolo.17';
 			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-SantiagoBragagnolo.9'.].
