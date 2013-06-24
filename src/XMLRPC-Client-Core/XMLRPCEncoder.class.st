@@ -83,6 +83,23 @@ XMLRPCEncoder >> encodeArray: a [
 ]
 
 { #category : #private }
+XMLRPCEncoder >> encodeStruct: s [ 
+	"Encode a struct."
+	| rv |
+	rv := Text new.
+	"rv append: '<struct>'."
+
+	s keysAndValuesDo: [
+		:key :val | 
+		rv append: '<member><name>' , (self normalize: key) , '</name>', (self encode: val) , '</member>'.
+	].
+
+	"rv append: '</struct>'."
+				
+	^ rv asString
+]
+
+{ #category : #private }
 XMLRPCEncoder >> normalize: s [ 
 	"Normalize an XML string."
 	| rv map |

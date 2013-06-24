@@ -60,6 +60,21 @@ XMLRPCDecoder >> decodeArray: xml [
 ]
 
 { #category : #private }
+XMLRPCDecoder >> decodeStruct: xml [
+	"Decode the Struct."
+
+	| rv |
+	rv := Dictionary new.
+	xml elements
+		do: [ :eachNode | 
+			| name value |
+			name := (eachNode elementAt: 'name') contentString.
+			value := self decode: (eachNode elementAt: 'value').
+			rv at: name put: value ].
+	^ rv
+]
+
+{ #category : #private }
 XMLRPCDecoder >> decodeStructFromDictionary: xml [
 	"Decode the Struct."
 
