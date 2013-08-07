@@ -361,6 +361,47 @@ spec for: #common do: [
 ].
 ]
 
+{ #category : #baselines }
+ConfigurationOfXMLRPC >> baseline14: spec [ 
+	<version: '1.4-baseline'>
+	
+spec for: #common do: [
+	spec blessing: #baseline.
+	spec repository: 'http://ss3.gemstone.com/ss/XMLRPC'. 
+
+	spec project: 'XMLSupport' with: [
+				spec 	className: 'ConfigurationOfXMLSupport';
+						versionString: '1.2.2';
+						file: 'ConfigurationOfXMLSupport';
+						repository: 'http://www.squeaksource.com/MetacelloRepository' 
+	].		
+
+	spec project: 'Kom' with: [
+				spec	className: 'ConfigurationOfKomHttpServer';
+						versionString: '1.0.9';
+						file: 'ConfigurationOfKomHttpServer';
+						repository: 'http://www.squeaksource.com/MetacelloRepository' 
+	].
+			
+	spec 	package: 'XMLRPC-Client-Core' with: [spec requires: #('XMLSupport' 'Kom') ];
+			package: 'XMLRPC-Client-Tests' with: [ spec requires: 'XMLRPC-Client-Core' ; requires:  'XMLRPC-Server-Core' ];
+			package: 'XMLRPC-Server-Core' with: [ spec requires: 'XMLRPC-Client-Core' ]; 
+			package: 'XMLRPC-Server-Tests' with: [ spec requires: 'XMLRPC-Server-Core'].
+
+	spec	group: 'default' with: 'XMLRPC-Client-Core';	
+			group: 'All' with: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests' 'XMLRPC-Server-Core' 'XMLRPC-Server-Tests');
+			group: 'Client' with: #('XMLRPC-Client-Core');
+			group: 'Client with Tests' with: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests');
+			group: 'Server' with: #('XMLRPC-Server-Core');
+			group: 'Server with Tests' with: #('XMLRPC-Server-Core' 'XMLRPC-Server-Tests').
+
+].
+
+spec for: #'pharo2.x' do: [
+	spec 	package: 'XMLRPC-Client-Core' with: [spec requires: #('XMLSupport') ].
+]
+]
+
 { #category : #accessing }
 ConfigurationOfXMLRPC >> project [
 
