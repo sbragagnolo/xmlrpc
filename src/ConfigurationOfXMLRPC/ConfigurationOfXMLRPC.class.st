@@ -383,7 +383,7 @@ spec for: #common do: [
 						repository: 'http://www.squeaksource.com/MetacelloRepository' 
 	].
 			
-	spec 	package: 'XMLRPC-Client-Core' with: [spec requires: #('XMLSupport' 'Kom') ];
+	spec 	package: 'XMLRPC-Client-Core' with: [spec requires: #('XMLSupport') ];
 			package: 'XMLRPC-Client-Tests' with: [ spec requires: 'XMLRPC-Client-Core' ; requires:  'XMLRPC-Server-Core' ];
 			package: 'XMLRPC-Server-Core' with: [ spec requires: 'XMLRPC-Client-Core' ]; 
 			package: 'XMLRPC-Server-Tests' with: [ spec requires: 'XMLRPC-Server-Core'].
@@ -391,15 +391,14 @@ spec for: #common do: [
 	spec	group: 'default' with: 'XMLRPC-Client-Core';	
 			group: 'All' with: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests' 'XMLRPC-Server-Core' 'XMLRPC-Server-Tests');
 			group: 'Client' with: #('XMLRPC-Client-Core');
+			group: 'All with Kom' with: #('All' 'Kom' );
 			group: 'Client with Tests' with: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests');
 			group: 'Server' with: #('XMLRPC-Server-Core');
 			group: 'Server with Tests' with: #('XMLRPC-Server-Core' 'XMLRPC-Server-Tests').
 
 ].
 
-spec for: #'pharo2.x' do: [
-	spec 	package: 'XMLRPC-Client-Core' with: [spec requires: #('XMLSupport') ].
-]
+
 ]
 
 { #category : #accessing }
