@@ -108,6 +108,7 @@ XMLRPCService >> stop: aPort [
 	servers at: aPort  ifPresent:  [
 		:server | 
 		server stop. 
+		servers removeKey: aPort.
 	].
 
 
