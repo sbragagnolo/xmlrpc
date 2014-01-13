@@ -45,7 +45,7 @@ XMLRPCTest >> setUp [
 	"Set up the test suite:"
 	| url |
 	XMLRPCKomServerEchoTest  new setUp. "get the server running on the other end.. make it through groovy/ python if you wish.. Server stop is set in the tearDown"
-	url := Url absoluteFromText: 'http://localhost:8081/'.
+	url := ZnUrl fromString: 'http://localhost:8081/'.
 	proxy := XMLRPCProxy new url: url.
 	"Transcript show: 'Set up XMLRPCTest';
 		 cr."

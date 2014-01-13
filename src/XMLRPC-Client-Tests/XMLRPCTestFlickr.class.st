@@ -14,7 +14,7 @@ XMLRPCTestFlickr >> setUp [
 	"This class try to test some xmlrpc methods exposed by Flickr. You need internet connection:"
 	| url |
 	
-	url := Url absoluteFromText: 'http://api.flickr.com/services/xmlrpc/'.
+	url := ZnUrl fromString: 'http://api.flickr.com/services/xmlrpc/'.
 
 	proxy := XMLRPCProxy new url: url.
 
