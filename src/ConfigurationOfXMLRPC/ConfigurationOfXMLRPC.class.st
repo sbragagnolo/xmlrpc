@@ -418,7 +418,7 @@ ConfigurationOfXMLRPC >> project [
 ConfigurationOfXMLRPC >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '1.0-Beta3'.
+	spec for: #'common' version:  '1.01'.
 
 ]
 
@@ -602,7 +602,23 @@ ConfigurationOfXMLRPC >> version100alpha4: spec [
 			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-GermanArduino.1'.].
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #versions }
+ConfigurationOfXMLRPC >> version101: spec [ 
+	<version: '1.01' imports: #('1.4-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #beta.
+		spec author: 'LucFabresse'.
+		spec timestamp: '18 June 2014 4:55:58 pm'.
+		spec project: 'Kom' with: '1.1.1';
+			project: 'XMLSupport' with: '1.2.2';
+			package: 'XMLRPC-Client-Core' with: 'XMLRPC-Client-Core-EiichiroIto.33';
+			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-SantiagoBragagnolo.16';
+			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-SantiagoBragagnolo.19';
+			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-SantiagoBragagnolo.9'.].
+]
+
+{ #category : #accessing }
 ConfigurationOfXMLRPC >> workspace [
 "
 This is the Metacello Configuration of XMLRPC for Pharo / Squeak.
