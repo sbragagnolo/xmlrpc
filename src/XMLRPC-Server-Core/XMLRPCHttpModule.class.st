@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'services'
 	],
-	#classVars : [
+	#classInstVars : [
 		'defaultModule',
 		'port',
 		'service'
@@ -136,9 +136,21 @@ XMLRPCHttpModule >> process: request [
 		xmldoc := XMLDOMParser parseDocumentFrom: (request contents) readStream.		
 		service := self resolveServiceName: xmldoc.
 		parameters := self resolveParameters: xmldoc.
-		response := self returnableResponse: (self invoke: service with: parameters) . 	
+		response :=  (service = 'system.multicall') ifTrue: [
+			(parameters at:1) collect: [ : i | 
+				| s p |
+				s :=  i at:'methodName'  .
+				p := i at: 'params'.
+				self invoke: s with: p. 	
+			]
+		] ifFalse: [ 
+			self invoke: service with: parameters . 	
+		 ].
+		response := self returnableResponse: response.
+		
 	] on: Error do:[ 
 		:e |
+		self halt.
 		 response := (XMLRPCErrorHandler new error: e) errorMessage.
 	].
 	^ response.

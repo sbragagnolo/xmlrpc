@@ -67,6 +67,7 @@ XMLRPCService >> atPort: aPort serve: aModuleDefinition at:anAlias [
 
 { #category : #logging }
 XMLRPCService >> destroy [
+	self halt.
 	self stopAll.
 	servers valuesDo: #destroy.
 	self initialize.
@@ -74,6 +75,7 @@ XMLRPCService >> destroy [
 
 { #category : #service }
 XMLRPCService >> destroy: aPort [
+	self halt.
 	servers at: aPort ifPresent: [ :server | 
 		server destroy.
 		servers removeKey: aPort.
@@ -117,5 +119,5 @@ XMLRPCService >> stop: aPort [
 { #category : #'as yet unclassified' }
 XMLRPCService >> stopAll [
 	servers valuesDo: #stop.
-
+	servers removeAll.
 ]
