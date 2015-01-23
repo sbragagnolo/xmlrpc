@@ -150,7 +150,6 @@ XMLRPCHttpModule >> process: request [
 		
 	] on: Error do:[ 
 		:e |
-		self halt.
 		 response := (XMLRPCErrorHandler new error: e) errorMessage.
 	].
 	^ response.
