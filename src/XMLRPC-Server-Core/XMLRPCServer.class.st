@@ -12,11 +12,6 @@ Class {
 	#category : #'XMLRPC-Server-Core'
 }
 
-{ #category : #configuration }
-XMLRPCServer class >> configurationOfLog [
-	<logConfigurationAsClass: #ConfigurationOfXMLRPC >
-]
-
 { #category : #construction }
 XMLRPCServer class >> defaultClass [ 
 	^ DefaultClass.

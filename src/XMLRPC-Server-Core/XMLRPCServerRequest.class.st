@@ -26,11 +26,6 @@ XMLRPCServerRequest class >> cleanUpReceiverDictionary [
 	
 ]
 
-{ #category : #configuration }
-XMLRPCServerRequest class >> configurationOfLog [
-	<logConfigurationAsClass: #ConfigurationOfXMLRPC >
-]
-
 { #category : #'as yet unclassified' }
 XMLRPCServerRequest class >> fromRequest: xmlString [ 
 	| xmldoc r parameters relatedSelector |
@@ -60,12 +55,12 @@ XMLRPCServerRequest class >> fromRequest: xmlString [
 	^ r
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'class initialization' }
 XMLRPCServerRequest class >> initialize [
 	Receivers := Dictionary new.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 XMLRPCServerRequest class >> receivers [
 	^Receivers ifNil: [Receivers := Dictionary new].
 ]
