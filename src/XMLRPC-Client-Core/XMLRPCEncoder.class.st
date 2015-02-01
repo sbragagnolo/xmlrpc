@@ -87,14 +87,14 @@ XMLRPCEncoder >> encodeStruct: s [
 	"Encode a struct."
 	| rv |
 	rv := Text new.
-	"rv append: '<struct>'."
+	rv append: '<struct>'.
 
 	s keysAndValuesDo: [
 		:key :val | 
 		rv append: '<member><name>' , (self normalize: key) , '</name>', (self encode: val) , '</member>'.
 	].
 
-	"rv append: '</struct>'."
+	rv append: '</struct>'.
 				
 	^ rv asString
 ]

@@ -146,9 +146,9 @@ XMLRPCProxy >> processFault: xmlFault [
 { #category : #private }
 XMLRPCProxy >> processResponse: xmlStream [ 
 	"Process the results."
-	| xmldoc methodResponse fault parameters content  |
+	| xmldoc methodResponse fault parameters   |
 	
-	xmldoc := XMLDOMParser parseDocumentFrom: xmlStream.
+	xmldoc := XMLDOMParser parse: xmlStream.
 	
 	methodResponse := xmldoc elementAt: 'methodResponse'. 
 	
