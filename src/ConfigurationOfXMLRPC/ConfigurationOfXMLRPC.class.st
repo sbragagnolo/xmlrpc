@@ -1,3 +1,7 @@
+"
+(ConfigurationOfXMLRPC project version: '1.5-baseline') load
+
+"
 Class {
 	#name : #ConfigurationOfXMLRPC,
 	#superclass : #Object,
@@ -403,7 +407,7 @@ spec for: #common do: [
 				versionString: #'stable';
 				repository: 'http://www.smalltalkhub.com/mc/PharoExtras/XMLParser/main' ].
 			
-	spec 	package: 'XMLRPC-Client-Core' with: [spec requires: #('XMLSupport') ];
+	spec 	package: 'XMLRPC-Client-Core' with: [spec requires: #('XMLParser') ];
 			package: 'XMLRPC-Client-Tests' with: [ spec requires: 'XMLRPC-Client-Core' ; requires:  'XMLRPC-Server-Core' ];
 			package: 'XMLRPC-Server-Core' with: [ spec requires: 'XMLRPC-Client-Core' ]; 
 			package: 'XMLRPC-Server-Tests' with: [ spec requires: 'XMLRPC-Server-Core'].
