@@ -25,19 +25,6 @@ ConfigurationOfXMLRPC class >> bootstrapPackage: aString from: aPath [
 			version workingCopy repositoryGroup addRepository: repository]
 ]
 
-{ #category : #'metacello tool support' }
-ConfigurationOfXMLRPC class >> configurationOfLog [
-	<logConfiguration>
-	^ [
-	     :builder |
-	     builder forClass: LoggedExampleCustomized 
-			     useLevel:#warn 
-			     showingLogAs: ('%tag #%class >> %selector [%log]' asPatternFormatter) 
-			     into: LogStdoutWriter instance.
-	].
-
-]
-
 { #category : #private }
 ConfigurationOfXMLRPC class >> ensureMetacello [
 	"Bootstrap Gofer (if necessary), load latest mcz file for ConfigurationOfMetacello (using old 
@@ -392,6 +379,38 @@ spec for: #common do: [
 			group: 'All' with: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests' 'XMLRPC-Server-Core' 'XMLRPC-Server-Tests');
 			group: 'Client' with: #('XMLRPC-Client-Core');
 			group: 'All with Kom' with: #('All' 'Kom' );
+			group: 'Client with Tests' with: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests');
+			group: 'Server' with: #('XMLRPC-Server-Core');
+			group: 'Server with Tests' with: #('XMLRPC-Server-Core' 'XMLRPC-Server-Tests').
+
+].
+
+
+]
+
+{ #category : #baselines }
+ConfigurationOfXMLRPC >> baseline15: spec [ 
+	<version: '1.5-baseline'>
+	
+spec for: #common do: [
+	spec blessing: #baseline.
+	spec repository: 'http://ss3.gemstone.com/ss/XMLRPC'. 
+
+	"use the up-to-date XMLParser project"
+	spec project: 'XMLParser' with: [ 
+			spec
+				className: 'ConfigurationOfXMLParser';
+				versionString: #'stable';
+				repository: 'http://www.smalltalkhub.com/mc/PharoExtras/XMLParser/main' ].
+			
+	spec 	package: 'XMLRPC-Client-Core' with: [spec requires: #('XMLSupport') ];
+			package: 'XMLRPC-Client-Tests' with: [ spec requires: 'XMLRPC-Client-Core' ; requires:  'XMLRPC-Server-Core' ];
+			package: 'XMLRPC-Server-Core' with: [ spec requires: 'XMLRPC-Client-Core' ]; 
+			package: 'XMLRPC-Server-Tests' with: [ spec requires: 'XMLRPC-Server-Core'].
+
+	spec	group: 'default' with: 'Client';	
+			group: 'All' with: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests' 'XMLRPC-Server-Core' 'XMLRPC-Server-Tests');
+			group: 'Client' with: #('XMLRPC-Client-Core');
 			group: 'Client with Tests' with: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests');
 			group: 'Server' with: #('XMLRPC-Server-Core');
 			group: 'Server with Tests' with: #('XMLRPC-Server-Core' 'XMLRPC-Server-Tests').
