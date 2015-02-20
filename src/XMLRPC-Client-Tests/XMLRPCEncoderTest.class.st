@@ -9,13 +9,13 @@ Class {
 	#category : #'XMLRPC-Client-Tests'
 }
 
-{ #category : #Testing }
+{ #category : #'instance creation' }
 XMLRPCEncoderTest >> suite [
 	^ (TestSuite named: 'XMLRPCEncoderTests')
 		addTest: (XMLRPCEncoderTest selector: #testEncoder)
 ]
 
-{ #category : #Testing }
+{ #category : #tests }
 XMLRPCEncoderTest >> testEncoder [
 	"Run all the encoder tests."
 	| e d |

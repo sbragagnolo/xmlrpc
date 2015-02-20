@@ -7,7 +7,7 @@ Class {
 	#category : #'XMLRPC-Client-Tests'
 }
 
-{ #category : #Testing }
+{ #category : #'test support' }
 XMLRPCTest >> performCall: method arg: a [ 
 	"Perform method invocation and make sure the result is the same as the  
 	passed-in value."
@@ -24,7 +24,7 @@ XMLRPCTest >> performCall: method arg: a [
 
 ]
 
-{ #category : #Testing }
+{ #category : #'test support' }
 XMLRPCTest >> performCall: method struct: a [ 
 	"Perform method invocation and make sure the result is the same as the  
 	passed-in value."
@@ -40,7 +40,7 @@ XMLRPCTest >> performCall: method struct: a [
 
 ]
 
-{ #category : #Testing }
+{ #category : #running }
 XMLRPCTest >> setUp [
 	"Set up the test suite:"
 	| url |
@@ -53,7 +53,7 @@ XMLRPCTest >> setUp [
 	^ self
 ]
 
-{ #category : #Testing }
+{ #category : #'instance creation' }
 XMLRPCTest >> suite [
 	^ (TestSuite named: 'XMLRPCTests')
 		addTest: (XMLRPCTest selector: #testInt);
@@ -73,19 +73,19 @@ XMLRPCTest >> suite [
 		addTest: (XMLRPCTest selector: #testBinary)
 ]
 
-{ #category : #Testing }
+{ #category : #running }
 XMLRPCTest >> tearDown [
 	XMLRPCHttpModule stop
 ]
 
-{ #category : #Testing }
+{ #category : #tests }
 XMLRPCTest >> testArray [
 	"Test arrays."
 
 	self performCall: 'echo.echoArray' arg: #('A' 1 3 2.525)
 ]
 
-{ #category : #Testing }
+{ #category : #tests }
 XMLRPCTest >> testBinary [
 	"Test Binary data."
 	| r p msg |
@@ -97,39 +97,39 @@ XMLRPCTest >> testBinary [
 	self assertEquals: msg to: (r contents asString) msg: 'Binary (base64) method failed.'
 ]
 
-{ #category : #Testing }
+{ #category : #tests }
 XMLRPCTest >> testBoolean [
 	"Test booleans."
 	self performCall: 'echo.echoBoolean' arg: true.
 	self performCall: 'echo.echoBoolean' arg: false
 ]
 
-{ #category : #Testing }
+{ #category : #tests }
 XMLRPCTest >> testDateTime [
 	"Test DateTime."
 	self performCall: 'echo.echoDateTime' arg: (XMLRPCDateTime now)
 ]
 
-{ #category : #Testing }
+{ #category : #tests }
 XMLRPCTest >> testDouble [
 	"Test doubles."
 	self performCall: 'echo.echoDouble' arg: 3.14159265358979
 ]
 
-{ #category : #Testing }
+{ #category : #tests }
 XMLRPCTest >> testInt [
 	"Test ints."
 	self performCall: 'echo.echoInt' arg: 19.
 ]
 
-{ #category : #Testing }
+{ #category : #tests }
 XMLRPCTest >> testString [
 	"Test strings."
 	self performCall: 'echo.echoString' arg: 'This is a test message.'.
 	self performCall: 'echo.echoString' arg: 'Embedded XML see  .'.  "implicit < > tags need to be handled"
 ]
 
-{ #category : #Testing }
+{ #category : #tests }
 XMLRPCTest >> testStruct [
 	"Test structs."
 	| d |

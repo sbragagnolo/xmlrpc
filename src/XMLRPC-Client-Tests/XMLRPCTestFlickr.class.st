@@ -9,7 +9,7 @@ Class {
 	#category : #'XMLRPC-Client-Tests'
 }
 
-{ #category : #Testing }
+{ #category : #running }
 XMLRPCTestFlickr >> setUp [
 	"This class try to test some xmlrpc methods exposed by Flickr. You need internet connection:"
 	| url |
@@ -26,12 +26,12 @@ XMLRPCTestFlickr >> setUp [
 	^ self
 ]
 
-{ #category : #Testing }
+{ #category : #running }
 XMLRPCTestFlickr >> tearDown [
 	
 ]
 
-{ #category : #Testing }
+{ #category : #tests }
 XMLRPCTestFlickr >> testEchoFlickr [
 	"Test struct call to Flickrecho service"
 	| d r |

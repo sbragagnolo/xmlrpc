@@ -7,7 +7,7 @@ Class {
 	#category : #'XMLRPC-Client-Tests'
 }
 
-{ #category : #Testing }
+{ #category : #'instance creation' }
 XMLRPCTests >> suite [
 	| s |
 	s := TestSuite named: 'All XML RPC Tests'.

@@ -9,13 +9,13 @@ Class {
 	#category : #'XMLRPC-Client-Tests'
 }
 
-{ #category : #Testing }
+{ #category : #'instance creation' }
 XMLRPCDecoderTest >> suite [
 	^ (TestSuite named: 'XMLRPCDecoderTests')
 		addTest: (XMLRPCDecoderTest selector: #testDecoder)
 ]
 
-{ #category : #Testing }
+{ #category : #tests }
 XMLRPCDecoderTest >> testDecoder [
 	"Test the decoder."
 	| e d coll |
@@ -49,7 +49,7 @@ XMLRPCDecoderTest >> testDecoder [
 		
 ]
 
-{ #category : #Testing }
+{ #category : #tests }
 XMLRPCDecoderTest >> testDecoderStruct [
 	"Test the decoder structure."
 	| e d dict xdom er dr|
@@ -76,7 +76,7 @@ XMLRPCDecoderTest >> testDecoderStruct [
 
 ]
 
-{ #category : #private }
+{ #category : #'test support' }
 XMLRPCDecoderTest >> xmlIfy: t [ 
 	^ '<?xml version="1.0"?><param>' , t , '</param>'
 ]
