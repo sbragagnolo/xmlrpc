@@ -29,16 +29,13 @@ XMLRPCServerRequest class >> cleanUpReceiverDictionary [
 { #category : #'as yet unclassified' }
 XMLRPCServerRequest class >> fromRequest: xmlString [ 
 	| xmldoc r parameters relatedSelector |
-	
-	self debug: ['Creating XMLRPCServerRequest from:', xmlString ].
-	
+		
 	r := self new.
 	parameters := OrderedCollection new.
 	xmldoc := XMLDOMParser parseDocumentFrom: xmlString readStream.
 	
 	relatedSelector := ((xmldoc firstElement elementAt: #methodName) contentString).
 	
-	self info: ['Server requested for: ', relatedSelector ].
 	r methodCall: relatedSelector.	
 	[
 		((xmldoc firstElement) elementAt: #params ) elements do: [
@@ -50,7 +47,6 @@ XMLRPCServerRequest class >> fromRequest: xmlString [
 		XMLRPCRequestError new signal: 'Could not decode request'
 	].
 
-	self info: ['Using parameters ', parameters ].
 	r params: parameters.
 	^ r
 ]
@@ -72,13 +68,11 @@ XMLRPCServerRequest class >> registerService: serviceName class: aClass selector
 
 { #category : #'as yet unclassified' }
 XMLRPCServerRequest class >> removeAllServices [
-	self info: ['Removing all services '].
 	self receivers removeAll.
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPCServerRequest class >> removeService: aXMLRPCService [
-	self info: ['Removing service: ', aXMLRPCService asString ].
 	self receivers removeKey: aXMLRPCService asSymbol
 ]
 
