@@ -7,12 +7,33 @@ Class {
 	#category : #'XMLRPC-Server-Tests'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #'test support' }
+XMLRPCZNServerEchoTest >> addTests [
+	"XMLRPCStandardEcho addTests"
+
+	XMLRPCServerRequest registerService: 'echo.echoArray' class: self selector: #echo:.
+	XMLRPCServerRequest registerService: 'echo.echoBinary' class: self selector: #echo:.
+	XMLRPCServerRequest registerService: 'echo.echoBoolean' class: self selector: #echo:.
+	XMLRPCServerRequest registerService: 'echo.echoDateTime' class: self  selector: #echo:.
+	XMLRPCServerRequest registerService: 'echo.echoDouble' class: self selector: #echo:.
+	XMLRPCServerRequest registerService: 'echo.echoInt' class: self selector: #echo:.
+	XMLRPCServerRequest registerService: 'echo.echoString' class: self selector: #echo:.
+	XMLRPCServerRequest registerService: 'echo.echoStruct' class: self selector: #echo:
+]
+
+{ #category : #'test support' }
+XMLRPCZNServerEchoTest >> echo: aValue [
+
+   ^aValue first
+]
+
+{ #category : #running }
 XMLRPCZNServerEchoTest >> setUp [
 	| delegate |
+
 	XMLRPCServer defaultClass: XMLRPCZNServer.
-	XMLRPCStandardEcho addTests.
-	
+	self addTests.
+
 	server := ZnServer on:  8081.
 	delegate := ZnDispatcherDelegate new.
 	
@@ -30,12 +51,12 @@ XMLRPCZNServerEchoTest >> setUp [
 			newServer := true]"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #running }
 XMLRPCZNServerEchoTest >> tearDown [
 	server stop.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #tests }
 XMLRPCZNServerEchoTest >> testThroughClient [
 " bring in tests here independently in next version.. for now just reuse the XMLRPCTests"
 
