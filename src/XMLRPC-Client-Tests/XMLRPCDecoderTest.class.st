@@ -5,7 +5,7 @@ XMLRPCDecoderTest new testDecoder
 "
 Class {
 	#name : #XMLRPCDecoderTest,
-	#superclass : #XMLRPCClientTests,
+	#superclass : #XMLRPCClientBaseTest,
 	#category : #'XMLRPC-Client-Tests'
 }
 
@@ -62,9 +62,9 @@ XMLRPCDecoderTest >> testDecoderStruct [
 	er := self xmlIfy: (e encodeStruct: dict).
 
 
-	xdom := XMLDOMParser parseDocumentFrom: er readStream.
+	xdom := XMLDOMParser parse: er readStream.
 
-	dr := d decodeStruct: (xdom elements at: 1).
+	dr := d decodeStruct: (xdom findElementNamed: 'struct').
 			"Transcript show: 'Decoded ' , er , ' to ' , dr asString. 
 			Transcript cr."
 		self

@@ -5,7 +5,7 @@ XMLRPCEncoderTest new testEncoder
 "
 Class {
 	#name : #XMLRPCEncoderTest,
-	#superclass : #XMLRPCClientTests,
+	#superclass : #XMLRPCClientBaseTest,
 	#category : #'XMLRPC-Client-Tests'
 }
 

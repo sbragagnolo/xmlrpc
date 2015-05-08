@@ -1,6 +1,11 @@
+"
+https://www.flickr.com/services/api/
+https://www.flickr.com/services/api/response.xmlrpc.html
+https://www.flickr.com/services/api/flickr.test.echo.html
+"
 Class {
-	#name : #XMLRPCTestFlickr,
-	#superclass : #XMLRPCClientTests,
+	#name : #XMLRPCFlickrTest,
+	#superclass : #XMLRPCClientBaseTest,
 	#instVars : [
 		'proxy',
 		'apiname',
@@ -10,11 +15,11 @@ Class {
 }
 
 { #category : #running }
-XMLRPCTestFlickr >> setUp [
+XMLRPCFlickrTest >> setUp [
 	"This class try to test some xmlrpc methods exposed by Flickr. You need internet connection:"
 	| url |
 	
-	url := ZnUrl fromString: 'http://api.flickr.com/services/xmlrpc/'.
+	url := ZnUrl fromString: 'https://api.flickr.com/services/xmlrpc/'.
 
 	proxy := XMLRPCProxy new url: url.
 
@@ -22,17 +27,12 @@ XMLRPCTestFlickr >> setUp [
 
 	apiname := 'f325ea24350b657d'.
 	apikey := '8ba79f0125a2e9d1f82ebb9cac40d68a'.
-
+	
 	^ self
 ]
 
-{ #category : #running }
-XMLRPCTestFlickr >> tearDown [
-	
-]
-
 { #category : #tests }
-XMLRPCTestFlickr >> testEchoFlickr [
+XMLRPCFlickrTest >> testEchoFlickr [
 	"Test struct call to Flickrecho service"
 	| d r |
 
@@ -43,9 +43,9 @@ XMLRPCTestFlickr >> testEchoFlickr [
 
 	r := proxy invokeMethod: 'flickr.test.echo' withStruct: d.
 	
-
 	"Quick test to check if the returned ByteString contains the same key value and secret passed"
 	"Only one of both is needed"
-	"self shouldnt: [ r findString: '8ba79f0125a2e9d1f82ebb9cac40d68a' ] raise: 0."
+	self shouldnt: [ r findString: '8ba79f0125a2e9d1f82ebb9cac40d68a' ] raise: 0.
 	self shouldnt: [ r findString: 'f325ea24350b657d' ] raise: 0.
+	
 ]

@@ -1,14 +1,15 @@
 Class {
-	#name : #XMLRPCTest,
-	#superclass : #XMLRPCClientTests,
+	#name : #XMLRPCClientTest,
+	#superclass : #XMLRPCClientBaseTest,
 	#instVars : [
-		'proxy'
+		'proxy',
+		'server'
 	],
 	#category : #'XMLRPC-Client-Tests'
 }
 
 { #category : #'test support' }
-XMLRPCTest >> performCall: method arg: a [ 
+XMLRPCClientTest >> performCall: method arg: a [ 
 	"Perform method invocation and make sure the result is the same as the  
 	passed-in value."
 	| r p |
@@ -25,7 +26,7 @@ XMLRPCTest >> performCall: method arg: a [
 ]
 
 { #category : #'test support' }
-XMLRPCTest >> performCall: method struct: a [ 
+XMLRPCClientTest >> performCall: method struct: a [ 
 	"Perform method invocation and make sure the result is the same as the  
 	passed-in value."
 	| r p |
@@ -41,52 +42,46 @@ XMLRPCTest >> performCall: method struct: a [
 ]
 
 { #category : #running }
-XMLRPCTest >> setUp [
-	"Set up the test suite:"
-	| url |
-	XMLRPCKomServerEchoTest  new setUp. "get the server running on the other end.. make it through groovy/ python if you wish.. Server stop is set in the tearDown"
-	url := ZnUrl fromString: 'http://localhost:8081/'.
-	proxy := XMLRPCProxy new url: url.
-	"Transcript show: 'Set up XMLRPCTest';
-		 cr."
+XMLRPCClientTest >> setUp [
+	server := XMLRPCServerForTest new startOn: 8081.
+	proxy := XMLRPCProxy new url: 'http://localhost:8081/' asZnUrl
 
-	^ self
 ]
 
 { #category : #'instance creation' }
-XMLRPCTest >> suite [
+XMLRPCClientTest >> suite [
 	^ (TestSuite named: 'XMLRPCTests')
-		addTest: (XMLRPCTest selector: #testInt);
+		addTest: (XMLRPCClientTest selector: #testInt);
 		
-		addTest: (XMLRPCTest selector: #testDouble);
+		addTest: (XMLRPCClientTest selector: #testDouble);
 		
-		addTest: (XMLRPCTest selector: #testString);
+		addTest: (XMLRPCClientTest selector: #testString);
 		
-		addTest: (XMLRPCTest selector: #testBoolean);
+		addTest: (XMLRPCClientTest selector: #testBoolean);
 		
-		addTest: (XMLRPCTest selector: #testArray);
+		addTest: (XMLRPCClientTest selector: #testArray);
 		
-		addTest: (XMLRPCTest selector: #testStruct);
+		addTest: (XMLRPCClientTest selector: #testStruct);
 		
-		addTest: (XMLRPCTest selector: #testDate);
+		addTest: (XMLRPCClientTest selector: #testDate);
 
-		addTest: (XMLRPCTest selector: #testBinary)
+		addTest: (XMLRPCClientTest selector: #testBinary)
 ]
 
 { #category : #running }
-XMLRPCTest >> tearDown [
-	XMLRPCHttpModule stop
+XMLRPCClientTest >> tearDown [
+	server stop
 ]
 
 { #category : #tests }
-XMLRPCTest >> testArray [
+XMLRPCClientTest >> testArray [
 	"Test arrays."
 
 	self performCall: 'echo.echoArray' arg: #('A' 1 3 2.525)
 ]
 
 { #category : #tests }
-XMLRPCTest >> testBinary [
+XMLRPCClientTest >> testBinary [
 	"Test Binary data."
 	| r p msg |
 	msg := 'Test for base64.'.
@@ -98,39 +93,39 @@ XMLRPCTest >> testBinary [
 ]
 
 { #category : #tests }
-XMLRPCTest >> testBoolean [
+XMLRPCClientTest >> testBoolean [
 	"Test booleans."
 	self performCall: 'echo.echoBoolean' arg: true.
 	self performCall: 'echo.echoBoolean' arg: false
 ]
 
 { #category : #tests }
-XMLRPCTest >> testDateTime [
+XMLRPCClientTest >> testDateTime [
 	"Test DateTime."
 	self performCall: 'echo.echoDateTime' arg: (XMLRPCDateTime now)
 ]
 
 { #category : #tests }
-XMLRPCTest >> testDouble [
+XMLRPCClientTest >> testDouble [
 	"Test doubles."
 	self performCall: 'echo.echoDouble' arg: 3.14159265358979
 ]
 
 { #category : #tests }
-XMLRPCTest >> testInt [
+XMLRPCClientTest >> testInt [
 	"Test ints."
 	self performCall: 'echo.echoInt' arg: 19.
 ]
 
 { #category : #tests }
-XMLRPCTest >> testString [
+XMLRPCClientTest >> testString [
 	"Test strings."
 	self performCall: 'echo.echoString' arg: 'This is a test message.'.
 	self performCall: 'echo.echoString' arg: 'Embedded XML see  .'.  "implicit < > tags need to be handled"
 ]
 
 { #category : #tests }
-XMLRPCTest >> testStruct [
+XMLRPCClientTest >> testStruct [
 	"Test structs."
 	| d |
 
