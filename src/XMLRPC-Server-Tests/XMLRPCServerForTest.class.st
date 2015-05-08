@@ -1,14 +1,16 @@
 Class {
-	#name : #XMLRPCStandardValidator,
+	#name : #XMLRPCServerForTest,
 	#superclass : #Object,
+	#instVars : [
+		'portNumber'
+	],
 	#category : #'XMLRPC-Server-Tests'
 }
 
-{ #category : #'as yet unclassified' }
-XMLRPCStandardValidator class >> addTests [
-	"XMLRPCStandardValidator addTests"
+{ #category : #services }
+XMLRPCServerForTest >> addServices [
 
-	XMLRPCService atPort: 8081 serve: 
+	XMLRPCService atPort: self port serve: 
 	{
 		'validator1.arrayOfStructsTest' -> { self-> #arrayOfStructsTest:}.
 		'validator1.countTheEntities'  ->  { self ->  #countTheEntities:}.
@@ -18,13 +20,21 @@ XMLRPCStandardValidator class >> addTests [
 		'validator1.nestedStructTest'  ->  { self ->  #nestedStructTest:}.
 		'validator1.simpleStructReturnTest'  ->  { self ->  #simpleStructReturnTest:}.
 		'validator1.manyTypesTest'  ->  { self ->  #manyTypesTest: }.	
+		'echo.echoArray' -> { self-> #echo:}.
+		'echo.echoBinary' 	-> { self-> #echo: }. 
+		'echo.echoBoolean' 	-> { self-> #echo: }. 
+		'echo.echoDateTime' 	-> { self-> #echo: }. 
+		'echo.echoDouble' 	-> { self-> #echo: }. 
+		'echo.echoInt' 		-> { self-> #echo: }. 
+		'echo.echoString' 	-> { self-> #echo: }. 
+		'echo.echoStruct' 	-> { self-> #echo: }.
 	} asXMLRPCHttpModule at:'/'.
 	
 
 ]
 
-{ #category : #'as yet unclassified' }
-XMLRPCStandardValidator class >> arrayOfStructsTest: aCollection [ 
+{ #category : #services }
+XMLRPCServerForTest >> arrayOfStructsTest: aCollection [ 
 	| ret |
 	ret := 0.
 	aCollection first	do: [:each | ret := ret
@@ -32,8 +42,8 @@ XMLRPCStandardValidator class >> arrayOfStructsTest: aCollection [
 	^ ret
 ]
 
-{ #category : #'as yet unclassified' }
-XMLRPCStandardValidator class >> countTheEntities: aCollection [ 
+{ #category : #services }
+XMLRPCServerForTest >> countTheEntities: aCollection [ 
 	| ret string |
 	ret := Dictionary new.
 	string := aCollection first.
@@ -55,21 +65,27 @@ XMLRPCStandardValidator class >> countTheEntities: aCollection [
 	^ ret
 ]
 
-{ #category : #'as yet unclassified' }
-XMLRPCStandardValidator class >> easyStructTest: aCollection [
+{ #category : #services }
+XMLRPCServerForTest >> easyStructTest: aCollection [
 	| ret |
 	ret := 0. aCollection first valuesDo: [ :each | ret := ret + each ].
 	^ret
 ]
 
-{ #category : #'as yet unclassified' }
-XMLRPCStandardValidator class >> echoStructTest: aDictionary [ 
+{ #category : #services }
+XMLRPCServerForTest >> echo: aValue [
+
+   ^aValue
+]
+
+{ #category : #services }
+XMLRPCServerForTest >> echoStructTest: aDictionary [ 
 
 	^ aDictionary
 ]
 
-{ #category : #'as yet unclassified' }
-XMLRPCStandardValidator class >> manyTypesTest: aCollection [
+{ #category : #services }
+XMLRPCServerForTest >> manyTypesTest: aCollection [
     "simply return the decoded values in aCollection encoded"
 	| arr x | 
 	x := 1.
@@ -78,15 +94,15 @@ XMLRPCStandardValidator class >> manyTypesTest: aCollection [
 	^arr 
 ]
 
-{ #category : #'as yet unclassified' }
-XMLRPCStandardValidator class >> moderateSizeArrayCheck: aCollection [ 
+{ #category : #services }
+XMLRPCServerForTest >> moderateSizeArrayCheck: aCollection [ 
 	| arr |
 	arr := aCollection first.
 	^ (arr first), (arr last)
 ]
 
-{ #category : #'as yet unclassified' }
-XMLRPCStandardValidator class >> nestedStructTest: aCollection [
+{ #category : #services }
+XMLRPCServerForTest >> nestedStructTest: aCollection [
 	| struct ret |
 	struct := aCollection first.
 	ret := 0.
@@ -94,8 +110,13 @@ XMLRPCStandardValidator class >> nestedStructTest: aCollection [
 	^ ret
 ]
 
-{ #category : #'as yet unclassified' }
-XMLRPCStandardValidator class >> simpleStructReturnTest: aCollection [ 
+{ #category : #accessing }
+XMLRPCServerForTest >> port [
+	^ portNumber ifNil: [ portNumber := 8081 ]
+]
+
+{ #category : #services }
+XMLRPCServerForTest >> simpleStructReturnTest: aCollection [ 
 	| num dict |
 	dict := Dictionary new.
 	num := aCollection first.
@@ -103,4 +124,23 @@ XMLRPCStandardValidator class >> simpleStructReturnTest: aCollection [
 		 at: 'times100' put: num * 100;
 		 at: 'times1000' put: num * 1000.
 	^ dict
+]
+
+{ #category : #running }
+XMLRPCServerForTest >> start [
+	XMLRPCServer defaultClass: XMLRPCZNServer.
+	self addServices.
+	5 milliSeconds wait.
+]
+
+{ #category : #running }
+XMLRPCServerForTest >> startOn: aNumber [
+	portNumber := aNumber.
+	self start
+]
+
+{ #category : #running }
+XMLRPCServerForTest >> stop [
+	XMLRPCService destroy.
+	XMLRPCServer initialize.
 ]
