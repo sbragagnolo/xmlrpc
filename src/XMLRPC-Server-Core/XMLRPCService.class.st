@@ -49,11 +49,9 @@ XMLRPCService class >> stopAll [
 
 { #category : #'as yet unclassified' }
 XMLRPCService >> atPort: aPort serve: aModuleDefinition at:anAlias [
-	| relatedServer |
 	
-	relatedServer := servers at: aPort ifAbsentPut: [
-		XMLRPCServer startOn: aPort with: aModuleDefinition at: anAlias.
-	].
+	servers at: aPort ifAbsentPut: [
+		XMLRPCServer startOn: aPort with: aModuleDefinition at: anAlias ]
 
 
 	
@@ -69,7 +67,6 @@ XMLRPCService >> destroy [
 
 { #category : #service }
 XMLRPCService >> destroy: aPort [
-	self halt.
 	servers at: aPort ifPresent: [ :server | 
 		server destroy.
 		servers removeKey: aPort.

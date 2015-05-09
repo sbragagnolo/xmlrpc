@@ -24,20 +24,12 @@ XMLRPCServer class >> defaultClass: aClass [
 
 { #category : #construction }
 XMLRPCServer class >> initialize [
-	self defaultClass: XMLRPCZNServer.
-]
-
-{ #category : #'as yet unclassified' }
-XMLRPCServer class >> startOn: aPort [
-	^ self startOn: aPort with: Dictionary new.
-
-
+	self defaultClass: XMLRPCZNServer
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPCServer class >> startOn: aPort with: aModuleDictinaryDefinition [
-	^ self defaultClass port: aPort; modules: aModuleDictinaryDefinition; start ; yourself.
-
+	^ self startOn: aPort with: aModuleDictinaryDefinition at: '/'
 
 ]
 
@@ -99,10 +91,7 @@ XMLRPCServer >> port: aPort [
 { #category : #control }
 XMLRPCServer >> start [
 
-	server ifNil:[
-		self createServer.
-	].
-
+	server ifNil:[	self createServer ].
 	server start.
 	
 	
