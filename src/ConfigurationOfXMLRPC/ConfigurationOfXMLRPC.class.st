@@ -441,7 +441,7 @@ ConfigurationOfXMLRPC >> project [
 ConfigurationOfXMLRPC >> stable: spec [
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version:  '1.01'.
+	spec for: #'common' version:  '1.02'.
 
 ]
 
@@ -639,6 +639,22 @@ ConfigurationOfXMLRPC >> version101: spec [
 			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-SantiagoBragagnolo.16';
 			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-SantiagoBragagnolo.19';
 			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-SantiagoBragagnolo.9'.].
+]
+
+{ #category : #versions }
+ConfigurationOfXMLRPC >> version102: spec [ 
+	<version: '1.02' imports: #('1.5-baseline') >
+	
+	spec for: #common do: [
+		spec blessing: #beta.
+		spec author: 'LucFabresse'.
+		spec timestamp: '9 May 2015'.
+		spec 
+			project: 'XMLSupport' with: '1.3.0';
+			package: 'XMLRPC-Client-Core' with: 'XMLRPC-Client-Core-LucFabresse.34';
+			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-LucFabresse.18';
+			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-LucFabresse.24';
+			package: 'XMLRPC-Server-Tests' with: ' XMLRPC-Server-Tests-LucFabresse.13'.].
 ]
 
 { #category : #accessing }
