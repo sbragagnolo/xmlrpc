@@ -2,38 +2,12 @@ Class {
 	#name : #XMLRPCServerForTest,
 	#superclass : #Object,
 	#instVars : [
-		'portNumber'
+		'server'
 	],
 	#category : #'XMLRPC-Server-Tests'
 }
 
-{ #category : #services }
-XMLRPCServerForTest >> addServices [
-
-	XMLRPCService atPort: self port serve: 
-	{
-		'validator1.arrayOfStructsTest' -> { self-> #arrayOfStructsTest:}.
-		'validator1.countTheEntities'  ->  { self ->  #countTheEntities:}.
-		'validator1.echoStructTest'  ->  { self ->  #echoStructTest:}.
-		'validator1.easyStructTest'  ->  { self  ->  #easyStructTest:}.
-		'validator1.moderateSizeArrayCheck'  ->  { self ->  #moderateSizeArrayCheck:}.
-		'validator1.nestedStructTest'  ->  { self ->  #nestedStructTest:}.
-		'validator1.simpleStructReturnTest'  ->  { self ->  #simpleStructReturnTest:}.
-		'validator1.manyTypesTest'  ->  { self ->  #manyTypesTest: }.	
-		'echo.echoArray' -> { self-> #echo:}.
-		'echo.echoBinary' 	-> { self-> #echo: }. 
-		'echo.echoBoolean' 	-> { self-> #echo: }. 
-		'echo.echoDateTime' 	-> { self-> #echo: }. 
-		'echo.echoDouble' 	-> { self-> #echo: }. 
-		'echo.echoInt' 		-> { self-> #echo: }. 
-		'echo.echoString' 	-> { self-> #echo: }. 
-		'echo.echoStruct' 	-> { self-> #echo: }.
-	} asXMLRPCHttpModule at:'/'.
-	
-
-]
-
-{ #category : #services }
+{ #category : #'services callbacks' }
 XMLRPCServerForTest >> arrayOfStructsTest: aCollection [ 
 	| ret |
 	ret := 0.
@@ -42,7 +16,7 @@ XMLRPCServerForTest >> arrayOfStructsTest: aCollection [
 	^ ret
 ]
 
-{ #category : #services }
+{ #category : #'services callbacks' }
 XMLRPCServerForTest >> countTheEntities: aCollection [ 
 	| ret string |
 	ret := Dictionary new.
@@ -65,26 +39,26 @@ XMLRPCServerForTest >> countTheEntities: aCollection [
 	^ ret
 ]
 
-{ #category : #services }
+{ #category : #'services callbacks' }
 XMLRPCServerForTest >> easyStructTest: aCollection [
 	| ret |
 	ret := 0. aCollection first valuesDo: [ :each | ret := ret + each ].
 	^ret
 ]
 
-{ #category : #services }
+{ #category : #'services callbacks' }
 XMLRPCServerForTest >> echo: aValue [
 
    ^aValue
 ]
 
-{ #category : #services }
+{ #category : #'services callbacks' }
 XMLRPCServerForTest >> echoStructTest: aDictionary [ 
 
 	^ aDictionary
 ]
 
-{ #category : #services }
+{ #category : #'services callbacks' }
 XMLRPCServerForTest >> manyTypesTest: aCollection [
     "simply return the decoded values in aCollection encoded"
 	| arr x | 
@@ -94,14 +68,14 @@ XMLRPCServerForTest >> manyTypesTest: aCollection [
 	^arr 
 ]
 
-{ #category : #services }
+{ #category : #'services callbacks' }
 XMLRPCServerForTest >> moderateSizeArrayCheck: aCollection [ 
 	| arr |
 	arr := aCollection first.
 	^ (arr first), (arr last)
 ]
 
-{ #category : #services }
+{ #category : #'services callbacks' }
 XMLRPCServerForTest >> nestedStructTest: aCollection [
 	| struct ret |
 	struct := aCollection first.
@@ -110,12 +84,29 @@ XMLRPCServerForTest >> nestedStructTest: aCollection [
 	^ ret
 ]
 
-{ #category : #accessing }
-XMLRPCServerForTest >> port [
-	^ portNumber ifNil: [ portNumber := 8081 ]
+{ #category : #services }
+XMLRPCServerForTest >> services [
+	^ {
+		'validator1.arrayOfStructsTest' -> { self-> #arrayOfStructsTest:}.
+		'validator1.countTheEntities'  ->  { self ->  #countTheEntities:}.
+		'validator1.echoStructTest'  ->  { self ->  #echoStructTest:}.
+		'validator1.easyStructTest'  ->  { self  ->  #easyStructTest:}.
+		'validator1.moderateSizeArrayCheck'  ->  { self ->  #moderateSizeArrayCheck:}.
+		'validator1.nestedStructTest'  ->  { self ->  #nestedStructTest:}.
+		'validator1.simpleStructReturnTest'  ->  { self ->  #simpleStructReturnTest:}.
+		'validator1.manyTypesTest'  ->  { self ->  #manyTypesTest: }.	
+		'echo.echoArray' -> { self-> #echo:}.
+		'echo.echoBinary' 	-> { self-> #echo: }. 
+		'echo.echoBoolean' 	-> { self-> #echo: }. 
+		'echo.echoDateTime' 	-> { self-> #echo: }. 
+		'echo.echoDouble' 	-> { self-> #echo: }. 
+		'echo.echoInt' 		-> { self-> #echo: }. 
+		'echo.echoString' 	-> { self-> #echo: }. 
+		'echo.echoStruct' 	-> { self-> #echo: }.
+	} asXMLRPCHttpModule
 ]
 
-{ #category : #services }
+{ #category : #'services callbacks' }
 XMLRPCServerForTest >> simpleStructReturnTest: aCollection [ 
 	| num dict |
 	dict := Dictionary new.
@@ -128,19 +119,17 @@ XMLRPCServerForTest >> simpleStructReturnTest: aCollection [
 
 { #category : #running }
 XMLRPCServerForTest >> start [
-	XMLRPCServer defaultClass: XMLRPCZNServer.
-	self addServices.
-	5 milliSeconds wait.
+	^ self startOn: 8081
 ]
 
 { #category : #running }
-XMLRPCServerForTest >> startOn: aNumber [
-	portNumber := aNumber.
-	self start
+XMLRPCServerForTest >> startOn: aPortNumber [
+	server := XMLRPCServer startOn: aPortNumber with: self services 
+	
 ]
 
 { #category : #running }
 XMLRPCServerForTest >> stop [
-	XMLRPCService destroy.
-	XMLRPCServer initialize.
+	server destroy
+
 ]
