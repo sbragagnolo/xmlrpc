@@ -654,7 +654,7 @@ ConfigurationOfXMLRPC >> version102: spec [
 			package: 'XMLRPC-Client-Core' with: 'XMLRPC-Client-Core-LucFabresse.34';
 			package: 'XMLRPC-Client-Tests' with: 'XMLRPC-Client-Tests-LucFabresse.18';
 			package: 'XMLRPC-Server-Core' with: 'XMLRPC-Server-Core-LucFabresse.24';
-			package: 'XMLRPC-Server-Tests' with: ' XMLRPC-Server-Tests-LucFabresse.13'.].
+			package: 'XMLRPC-Server-Tests' with: 'XMLRPC-Server-Tests-LucFabresse.13' ].
 ]
 
 { #category : #accessing }
