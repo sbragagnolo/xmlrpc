@@ -424,6 +424,14 @@ spec for: #common do: [
 
 ]
 
+{ #category : #'symbolic versions' }
+ConfigurationOfXMLRPC >> development: spec [
+	<symbolicVersion: #'development'>
+
+	spec for: #'common' version: '1.5-baseline'.
+
+]
+
 { #category : #accessing }
 ConfigurationOfXMLRPC >> project [
 
