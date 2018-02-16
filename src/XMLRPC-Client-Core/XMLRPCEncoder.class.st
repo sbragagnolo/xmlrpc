@@ -36,7 +36,8 @@ XMLRPCEncoder >> encode: val [
 			"Numbers"
 			[ SmallInteger ]		->	[ ^ self wrapVal: val asString type: 'i4' ].
 			[ Float ]	 			->	[ ^ self wrapVal: val asString type: 'double' ].
-			
+			[ BoxedFloat64 ]	 			->	[ ^ self wrapVal: val asString type: 'double' ].
+						
 			"Strings"		
 			[ String ] 			->	[ ^ self wrapVal: (self normalize: val) ].
 			[ ByteString ] 		-> 	[ ^ self wrapVal: (self normalize: val) ].
