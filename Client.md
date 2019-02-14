@@ -2,6 +2,29 @@
 ## Manifest
 XMLRPC Client implements a client for interacting with a remote / local XMLRPC server. 
 Wikipedia [https://en.wikipedia.org/wiki/XML-RPC]
+## Project Examples
+```smalltalk
+exampleInvokeOnRemoteMethodWithArguments
+	| proxy |
+	proxy := XMLRPCProxy new url: 'http://localhost:8081/' asUrl.
+	proxy invokeMethod: 'validator1.echoStructTest' withArgs: #('Hallo')
+```
+```smalltalk
+exampleCreateProxy
+	| proxy |
+	proxy := XMLRPCProxy new
+		url: 'http://localhost:8081/' asZnUrl self readme
+```
+```smalltalk
+exampleInvokeOnRemoteMethodWithStruct
+	| proxy data |
+	data := Dictionary new.
+	data at: 'true' put: true.
+	data at: 'Markus' put: 'Fritsche'.
+	proxy := XMLRPCProxy new url: 'http://localhost:8081/' asZnUrl.
+	proxy invokeMethod: 'validator1.echoStructTest' withStruct: data
+```
+
 
 
 ## XMLRPCDateTime
