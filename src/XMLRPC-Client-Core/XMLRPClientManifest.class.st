@@ -12,12 +12,15 @@ Class {
 
 { #category : #'as yet unclassified' }
 XMLRPClientManifest class >> exampleCreateProxy [
+	<example>
 	| proxy |
-	proxy := XMLRPCProxy new url: 'http://localhost:8081/' asZnUrl
+	proxy := XMLRPCProxy new
+		url: 'http://localhost:8081/' asZnUrl self readme
 ]
 
 { #category : #'as yet unclassified' }
 XMLRPClientManifest class >> exampleInvokeOnRemoteMethodWithArguments [
+	<example>
 	| proxy |
 	proxy := XMLRPCProxy new url: 'http://localhost:8081/' asUrl.
 	proxy invokeMethod: 'validator1.echoStructTest' withArgs: #('Hallo')
@@ -25,6 +28,7 @@ XMLRPClientManifest class >> exampleInvokeOnRemoteMethodWithArguments [
 
 { #category : #'as yet unclassified' }
 XMLRPClientManifest class >> exampleInvokeOnRemoteMethodWithStruct [
+	<example>
 	| proxy data |
 	data := Dictionary new.
 	data at: 'true' put: true.
