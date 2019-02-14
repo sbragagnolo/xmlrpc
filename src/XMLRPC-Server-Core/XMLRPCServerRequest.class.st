@@ -26,31 +26,6 @@ XMLRPCServerRequest class >> cleanUpReceiverDictionary [
 	
 ]
 
-{ #category : #'as yet unclassified' }
-XMLRPCServerRequest class >> fromRequest: xmlString [ 
-	| xmldoc r parameters relatedSelector |
-		
-	r := self new.
-	parameters := OrderedCollection new.
-	xmldoc := XMLDOMParser parseDocumentFrom: xmlString readStream.
-	
-	relatedSelector := ((xmldoc firstElement elementAt: #methodName) contentString).
-	
-	r methodCall: relatedSelector.	
-	[
-		((xmldoc firstElement) elementAt: #params ) elements do: [
-			:each | 
-			parameters add: (XMLRPCDecoder new decode: each)
-		].
-		
-	] on: Error do: [
-		XMLRPCRequestError new signal: 'Could not decode request'
-	].
-
-	r params: parameters.
-	^ r
-]
-
 { #category : #'class initialization' }
 XMLRPCServerRequest class >> initialize [
 	Receivers := Dictionary new.
