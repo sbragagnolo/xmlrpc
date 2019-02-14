@@ -14,22 +14,25 @@ Class {
 }
 
 { #category : #'instance creation' }
-XMLRPCDateTime class >> fromDate: d time: t [ 
-	"Get a new XMLRPCDateTime instance from the given date and time."
-	^ XMLRPCDateTime new date: d;
-		 time: t
+XMLRPCDateTime class >> fromDate: d time: t [
+	<doc: 'Get a new XMLRPCDateTime instance from the given date and time.'>
+	^ XMLRPCDateTime new
+		date: d;
+		time: t
 ]
 
 { #category : #'instance creation' }
 XMLRPCDateTime class >> fromISO8601String: s [
-	"Get a new XMLRPCDateTime instance from the given ISO8601 string."
+	<doc: 'Get a new XMLRPCDateTime instance from the given ISO8601 string.'>
 	^ XMLRPCDateTime new decodeISO8601: s
 ]
 
 { #category : #'instance creation' }
-XMLRPCDateTime class >> now [ 
-	"Get a new XMLRPCDateTime instance representing the current time."
-	^ XMLRPCDateTime new date: (Date today); time: (Time now)
+XMLRPCDateTime class >> now [
+	<doc: 'Get a new XMLRPCDateTime instance representing the current time.'>
+	^ XMLRPCDateTime new
+		date: Date today;
+		time: Time now
 ]
 
 { #category : #private }
@@ -58,33 +61,28 @@ XMLRPCDateTime >> date: d [
 ]
 
 { #category : #xmlrpc }
-XMLRPCDateTime >> decodeISO8601: s [ 
-	"Set the date and time in this object by parsing the ISO8601 string."
+XMLRPCDateTime >> decodeISO8601: s [
+	<doc: 'Set the date and time in this object by parsing the ISO8601 string.'>
 	| d t Y M D |
 	Y := (s copyFrom: 1 to: 4) asInteger.
 	M := (s copyFrom: 5 to: 6) asInteger.
 	D := (s copyFrom: 7 to: 8) asInteger.
-	d := Date
-				newDay: D
-				month: M
-				year: Y.
-	t := Time readFrom: ((s copyFrom: 10 to: 17) readStream).
+	d := Date newDay: D month: M year: Y.
+	t := Time readFrom: (s copyFrom: 10 to: 17) readStream.
 	self date: d.
 	self time: t
 ]
 
 { #category : #xmlrpc }
 XMLRPCDateTime >> encodeISO8601 [
+	<doc: 'Encode me into an ISO8601 datetime for XML-RPC'>
 	| rv |
-	"Encode me into an ISO8601 datetime for XML-RPC"
 	rv := Text new.
-
-	rv append: (date year asString).
-	rv append: (self pad: (date monthIndex asString) to: 2 with: '0').
-	rv append: (self pad: (date dayOfMonth asString) to: 2 with: '0').
+	rv append: date year asString.
+	rv append: (self pad: date monthIndex asString to: 2 with: '0').
+	rv append: (self pad: date dayOfMonth asString to: 2 with: '0').
 	rv append: 'T'.
-	rv append: (time print24).
-
+	rv append: time print24.
 	^ rv asString
 ]
 

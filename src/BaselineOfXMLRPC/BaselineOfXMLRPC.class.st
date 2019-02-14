@@ -11,6 +11,7 @@ BaselineOfXMLRPC >> baseline: spec [
 		for: #common
 		do: [ "use the up-to-date XMLParser project"
 			self xmlparser: spec.
+			self pragmatic: spec.
 			spec
 				package: 'XMLRPC-Client-Core'
 					with: [ spec requires: #('XMLParser') ];
@@ -24,15 +25,18 @@ BaselineOfXMLRPC >> baseline: spec [
 					with: [ spec requires: 'XMLRPC-Server-Core' ].
 			spec
 				group: 'default' with: 'Client';
-				group: 'All'
-					with:
-					#('XMLRPC-Client-Core' 'XMLRPC-Client-Tests' 'XMLRPC-Server-Core' 'XMLRPC-Server-Tests');
-				group: 'Client' with: #('XMLRPC-Client-Core');
-				group: 'Client with Tests'
-					with: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests');
-				group: 'Server' with: #('XMLRPC-Server-Core');
-				group: 'Server with Tests'
-					with: #('XMLRPC-Server-Core' 'XMLRPC-Server-Tests') ]
+				group: 'All' with: #(ClientTests ServerTests);
+				group: 'Client' with: #('XMLRPC-Client-Core' Pragmatic);
+				group: 'ClientTests' with: #(Client 'XMLRPC-Client-Tests');
+				group: 'Server' with: #('XMLRPC-Server-Core' Pragmatic);
+				group: 'ServerTests' with: #(Server 'XMLRPC-Server-Tests') ]
+]
+
+{ #category : #baselines }
+BaselineOfXMLRPC >> pragmatic: spec [
+	spec
+		baseline: 'Pragmatic'
+		with: [ spec repository: 'github://sbragagnolo/Pragmatic' ]
 ]
 
 { #category : #baselines }
