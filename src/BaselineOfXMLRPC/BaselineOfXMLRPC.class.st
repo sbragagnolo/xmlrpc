@@ -11,7 +11,7 @@ BaselineOfXMLRPC >> baseline: spec [
 		for: #common
 		do: [ "use the up-to-date XMLParser project"
 			self xmlparser: spec.
-			self pragmatic: spec. 
+			self pragmatic: spec.
 			spec
 				package: 'XMLRPC-Client-Core'
 					with: [ spec requires: #('XMLParser') ];
@@ -28,10 +28,10 @@ BaselineOfXMLRPC >> baseline: spec [
 				group: 'All'
 					with:
 					#('XMLRPC-Client-Core' 'XMLRPC-Client-Tests' 'XMLRPC-Server-Core' 'XMLRPC-Server-Tests');
-				group: 'Client' with: #('XMLRPC-Client-Core');
+				group: 'Client' with: #('XMLRPC-Client-Core' Pragmatic);
 				group: 'Client with Tests'
 					with: #('XMLRPC-Client-Core' 'XMLRPC-Client-Tests');
-				group: 'Server' with: #('XMLRPC-Server-Core');
+				group: 'Server' with: #('XMLRPC-Server-Core' Pragmatic);
 				group: 'Server with Tests'
 					with: #('XMLRPC-Server-Core' 'XMLRPC-Server-Tests') ]
 ]
