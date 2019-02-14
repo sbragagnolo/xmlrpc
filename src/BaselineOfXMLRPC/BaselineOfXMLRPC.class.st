@@ -36,7 +36,7 @@ BaselineOfXMLRPC >> baseline: spec [
 BaselineOfXMLRPC >> pragmatic: spec [
 	spec
 		baseline: 'Pragmatic'
-		with: [ spec repository: 'github://sbragagnolo/Pragmatic' ]
+		with: [ spec repository: 'github://sbragagnolo/Pragmatic/src' ]
 ]
 
 { #category : #baselines }
