@@ -40,7 +40,7 @@ XMLRPCDecoder >> decode: xml [
 		[ #double ] 					->	[ ^ Float readFrom: el0 contentString readStream ].
 		[ #boolean ]				->	[ ^ el0 contentString = '1' ].
 		[ #'dateTime.iso8601' ]		->	[ ^ XMLRPCDateTime fromISO8601String: el0 contentString ].
-		[ #base64 ] 				->	[ ^ Base64MimeConverter mimeDecodeToBytes: el0 contentString readStream ].
+		[ #base64 ] 				->	[ ^  el0 contentString base64Decoded  readStream   ].
 	} otherwise: [ 
 		XMLRPCException signal: 'Unhandled type!  ' , xml name. 
 	].
