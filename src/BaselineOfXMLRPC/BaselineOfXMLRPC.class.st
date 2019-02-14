@@ -6,6 +6,7 @@ Class {
 
 { #category : #baselines }
 BaselineOfXMLRPC >> baseline: spec [
+	<baseline>
 	spec
 		for: #common
 		do: [ "use the up-to-date XMLParser project"
