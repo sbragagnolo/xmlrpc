@@ -42,8 +42,6 @@ BaselineOfXMLRPC >> pragmatic: spec [
 { #category : #baselines }
 BaselineOfXMLRPC >> xmlparser: spec [
 	spec
-		project: 'XMLParser'
-		with: [ spec
-				baseline: 'XMLParser'
-				with: [ spec repository: 'github://svenvc/XML-Support-Pharo' ] ]
+		baseline: 'XMLParser'
+		with: [ spec repository: 'github://svenvc/XML-Support-Pharo' ]
 ]
