@@ -44,7 +44,6 @@ BaselineOfXMLRPC >> xmlparser: spec [
 	spec
 		project: 'XMLParser'
 		with: [ spec
-				className: 'ConfigurationOfXMLParser';
-				versionString: #stable;
-				repository: 'http://www.smalltalkhub.com/mc/PharoExtras/XMLParser/main' ]
+				baseline: 'XMLParser'
+				with: [ spec repository: 'github://svenvc/XML-Support-Pharo' ] ]
 ]
