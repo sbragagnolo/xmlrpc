@@ -59,7 +59,7 @@ XMLRPCDecoderTest >> testDecoderStruct [
 	dict at: 'a' put: 'A'.
 	dict at: 'b' put: 'B'.
 
-	er := self xmlIfy: (e encodeStruct: dict).
+	er := self xmlIfy: (e encode: dict).
 
 
 	xdom := XMLDOMParser parse: er readStream.

@@ -37,7 +37,7 @@ XMLRPCEncoder >> encode: val [
 			[ SmallInteger ]		->	[ ^ self wrapVal: val asString type: 'i4' ].
 			[ Float ]	 			->	[ ^ self wrapVal: val asString type: 'double' ].
 			[ BoxedFloat64 ]	 			->	[ ^ self wrapVal: val asString type: 'double' ].
-						
+			[ SmallFloat64 ]	 			->	[ ^ self wrapVal: val asString type: 'double' ].						
 			"Strings"		
 			[ String ] 			->	[ ^ self wrapVal: (self normalize: val) ].
 			[ ByteString ] 		-> 	[ ^ self wrapVal: (self normalize: val) ].
@@ -88,14 +88,13 @@ XMLRPCEncoder >> encodeStruct: s [
 	"Encode a struct."
 	| rv |
 	rv := Text new.
-	rv append: '<struct>'.
-
+"	rv append: '<struct>'."
 	s keysAndValuesDo: [
 		:key :val | 
 		rv append: '<member><name>' , (self normalize: key) , '</name>', (self encode: val) , '</member>'.
 	].
 
-	rv append: '</struct>'.
+"	rv append: '</struct>'."
 				
 	^ rv asString
 ]

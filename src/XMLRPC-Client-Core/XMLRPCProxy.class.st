@@ -69,7 +69,7 @@ XMLRPCProxy >> buildXmlRpc: method withStruct: args [
 	e := XMLRPCEncoder new.
 	params := Text new.
 
-	params append: '<param><value>'	, (e encodeStruct: args) , '</value></param>'.
+	params append: '<param><value>'	, (e encode: args) , '</value></param>'.
 	
 	rv := '<?xml version="1.0"?><methodCall><methodName>' , method , '</methodName><params>' , params , '</params></methodCall>'.
 	
